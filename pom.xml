@@ -37,8 +37,8 @@
 			</exclusions>
 		</dependency>
 		<dependency> <!-- AOP with spring -->
-		  <groupId>aopalliance</groupId>
-		  <artifactId>aopalliance</artifactId>
+			<groupId>aopalliance</groupId>
+			<artifactId>aopalliance</artifactId>
 			<version>1.0</version>
 			<optional>true</optional>
 		</dependency>
