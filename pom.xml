@@ -20,7 +20,7 @@
 		</dependency>
 		
 		<!-- spring support -->
-		<dependency> <!-- required annotation -->
+		<dependency> <!-- for @Required  -->
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>
 			<version>3.1.1.RELEASE</version>
@@ -35,6 +35,12 @@
 					<artifactId>commons-logging</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency> <!-- AOP with spring -->
+		  <groupId>aopalliance</groupId>
+		  <artifactId>aopalliance</artifactId>
+			<version>1.0</version>
+			<optional>true</optional>
 		</dependency>
 
 		<!-- tests compile -->
