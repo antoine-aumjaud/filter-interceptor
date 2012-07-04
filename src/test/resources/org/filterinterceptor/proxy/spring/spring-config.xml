@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<bean id="realService" class="org.filterinterceptor.sample.service.ServiceImpl" />
+
+	<bean id="filterService" class="org.filterinterceptor.FilterService"
+		init-method="initFilters">
+		<constructor-arg index="0" value="./src/test/resources/others_filters"/>
+	</bean>
+
+	<bean id="serviceInterceptor" class="org.filterinterceptor.proxy.spring.FilterInterceptor">
+		<property name="filterService" ref="filterService" />
+	</bean>
+	
+	
+	<bean id="service" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target" ref="realService" />
+		<property name="interceptorNames">
+			<list><value>serviceInterceptor</value></list>
+		</property>
+	</bean>
+	
+	
+</beans>
