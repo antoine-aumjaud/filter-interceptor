@@ -20,7 +20,7 @@
 		</dependency>
 		
 		<!-- spring support -->
-		<dependency> <!-- for @Required  -->
+		<dependency> <!-- for @Required Spring annotation -->
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>
 			<version>3.1.1.RELEASE</version>
@@ -36,7 +36,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<dependency> <!-- AOP with spring -->
+		<dependency> <!--for AOP with Spring -->
 			<groupId>aopalliance</groupId>
 			<artifactId>aopalliance</artifactId>
 			<version>1.0</version>
@@ -62,19 +62,12 @@
 			<version>3.1</version>
 			<scope>test</scope>
 		</dependency>
-
-		<dependency> <!-- ApplicationContext for test -->
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<version>3.1.1.RELEASE</version>
 			<scope>test</scope>
 		</dependency>
-
-		<!-- <artifactId>spring-aop</artifactId> <groupId>aopalliance</groupId> 
-			<artifactId>aopalliance</artifactId> <artifactId>spring-beans</artifactId> 
-			<artifactId>spring-core</artifactId> <artifactId>spring-asm</artifactId> 
-			<artifactId>spring-aop</artifactId> -->
-
 
 		<!-- tests runtime -->
 		<dependency>
