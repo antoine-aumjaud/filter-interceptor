@@ -3,8 +3,24 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.filter-interceptor</groupId>
 	<artifactId>filter-interceptor</artifactId>
-	<version>0.4</version>
+	<version>1.10</version>
 	<packaging>jar</packaging>
+
+	<name>Filter Interceptor</name>
+	<description>Filter interceptor intercept defined method on a service to applied dynamically a Filter.</description>
+	<url>https://github.com/antoine-aumjaud/filter-interceptor/blob/master/README.md</url>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+		<url>https://github.com/antoine-aumjaud/filter-interceptor.git</url>
+	</scm>
 
 	<dependencies>
 		<!-- log -->
