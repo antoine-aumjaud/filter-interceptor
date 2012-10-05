@@ -20,8 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This class exposes {@link FilterServiceManagement} methods in a MBean and
- * register MBean component
+ * This class exposes {@link FilterServiceManagement} and
+ * {@link FilterManagement} methods in MBean and register MBean components
  */
 
 public class FilterServiceManagement implements FilterServiceManagementMBean {

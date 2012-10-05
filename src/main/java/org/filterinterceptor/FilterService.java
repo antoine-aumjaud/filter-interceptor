@@ -269,7 +269,7 @@ public class FilterService {
 				URL url = file.toURI().toURL();
 				urlList.add(url);
 			}
-			classLoader = new URLClassLoader(urlList.toArray(new URL[0]));
+			classLoader = new URLClassLoader(urlList.toArray(new URL[0]), this.getClass().getClassLoader());
 		} else {
 			classLoader = this.getClass().getClassLoader();
 		}
