@@ -23,8 +23,12 @@ import org.slf4j.LoggerFactory;
  * This class exposes {@link FilterServiceManagement} and
  * {@link FilterManagement} methods in MBean and register MBean components
  */
-
 public class FilterServiceManagement implements FilterServiceManagementMBean {
+	/**
+	 * Default domain used in JMX server
+	 */
+	public static final String MBEAN_DEFAULT_DOMAIN = "FilterService";
+
 	private static final Logger logger = LoggerFactory.getLogger(FilterServiceManagement.class);
 
 	private final FilterService filterService;
@@ -32,17 +36,26 @@ public class FilterServiceManagement implements FilterServiceManagementMBean {
 	// TODO tests JMX
 
 	@SuppressWarnings("serial")
-	public static void initMBean(FilterService filterService) {
+	/**
+	 * Publish managements methods in platform JMX Server
+	 * @param filterService the filterService to expose
+	 * @param mBeanDomain the name of the domain of the beans
+	 */
+	public static void initMBean(FilterService filterService, String mBeanDomain) {
 		MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
 		// MBeanServerFactory.createMBeanServer(filterService.getClass().getName());
 		try {
+			if (mBeanDomain == null || mBeanDomain.length() == 0)
+				mBeanDomain = MBEAN_DEFAULT_DOMAIN;
+			logger.info("Register MBeans in domain: " + mBeanDomain);
+
 			logger.info("Register MBean FilterServiceManagement");
-			String domain = "FilterService";
-			mbs.registerMBean(new FilterServiceManagement(filterService), new ObjectName(domain, "type", "Management"));
+			mbs.registerMBean(new FilterServiceManagement(filterService), new ObjectName(mBeanDomain, "type",
+					"Management"));
 
 			logger.info("Register MBeans FilterManagement");
 			for (final Filter<?> filter : filterService.getAllFilters()) {
-				mbs.registerMBean(new FilterManagement(filter, filterService), new ObjectName(domain,
+				mbs.registerMBean(new FilterManagement(filter, filterService), new ObjectName(mBeanDomain,
 						new Hashtable<String, String>() {
 							{
 								put("filter", filter.getService().getSimpleName());
@@ -63,10 +76,9 @@ public class FilterServiceManagement implements FilterServiceManagementMBean {
 		}
 	}
 
-	private FilterServiceManagement(FilterService filterService) {
-		this.filterService = filterService;
-	}
-
+	/*
+	 * MBEAN methods implementation
+	 */
 	@Override
 	public List<String> getFilters() {
 		List<String> ret = new ArrayList<String>();
@@ -88,4 +100,10 @@ public class FilterServiceManagement implements FilterServiceManagementMBean {
 		filterService.initFilters();
 	}
 
+	/*
+	 * PRIVATE
+	 */
+	private FilterServiceManagement(FilterService filterService) {
+		this.filterService = filterService;
+	}
 }

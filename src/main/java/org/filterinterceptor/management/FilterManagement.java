@@ -16,6 +16,10 @@ public class FilterManagement implements FilterManagementMBean {
 		this.filterService = filterService;
 	}
 
+	/*
+	 * MBEAN methods implementation
+	 */
+
 	@Override
 	public String getDescription() {
 		return filter.getDescription();

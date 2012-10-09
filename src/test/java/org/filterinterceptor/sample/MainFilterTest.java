@@ -31,7 +31,7 @@ public final class MainFilterTest {
 		}
 
 		// Init JMX
-		FilterServiceManagement.initMBean(filterService);
+		FilterServiceManagement.initMBean(filterService, null);
 
 		// Create real bean service
 		IService s = new ServiceImpl();
