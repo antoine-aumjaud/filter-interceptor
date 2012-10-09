@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.filter-interceptor</groupId>
+	<groupId>net.gt</groupId>
 	<artifactId>filter-interceptor</artifactId>
-	<version>1.10</version>
+	<version>1.12</version>
 	<packaging>jar</packaging>
 
 	<name>Filter Interceptor</name>
-	<description>Filter interceptor intercept defined method on a service to applied dynamically a Filter.</description>
+	<description>Filter interceptor intercepts defined methods on a service to applied dynamically a Filter.</description>
 	<url>https://github.com/antoine-aumjaud/filter-interceptor/blob/master/README.md</url>
 
 	<licenses>
@@ -31,7 +31,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>jcl-over-slf4j</artifactId><!-- JCL imported by spring-beans -->
+			<artifactId>jcl-over-slf4j</artifactId><!-- JCL: imported by spring-beans -->
 			<version>1.6.6</version>
 		</dependency>
 		
@@ -143,4 +143,41 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	<!-- 
+	release
+	sign
+	
+	
+	<profiles>
+  <profile>
+    <id>release-sign-artifacts</id>
+    <activation>
+      <property>
+        <name>performRelease</name>
+        <value>true</value>
+      </property>
+    </activation>
+    <build>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-gpg-plugin</artifactId>
+          <version>1.1</version>
+          <executions>
+            <execution>
+              <id>sign-artifacts</id>
+              <phase>verify</phase>
+              <goals>
+                <goal>sign</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </build>
+  </profile>
+</profiles>
+	
+	 -->
 </project>
