@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.gt</groupId>
 	<artifactId>filter-interceptor</artifactId>
-	<version>1.13</version>
+	<version>1.14-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>Filter Interceptor</name>
@@ -18,8 +18,11 @@
 		</license>
 	</licenses>
 
+	
 	<scm>
-		<url>https://github.com/antoine-aumjaud/filter-interceptor.git</url>
+		<connection>scm:git:git@github.com:antoine-aumjaud/filter-interceptor.git</connection>
+		<developerConnection>scm:git:git@github.com:antoine-aumjaud/filter-interceptor.git</developerConnection>
+		<url>http://github.com/antoine-aumjaud/filter-interceptor</url>
 	</scm>
 
 	<dependencies>
