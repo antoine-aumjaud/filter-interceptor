@@ -1,4 +1,4 @@
-package org.filterinterceptor.management;
+package org.filterinterceptor.management.mbean;
 
 import java.io.IOException;
 import java.util.List;

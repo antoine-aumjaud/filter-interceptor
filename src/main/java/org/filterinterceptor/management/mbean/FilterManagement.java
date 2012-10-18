@@ -1,17 +1,17 @@
-package org.filterinterceptor.management;
+package org.filterinterceptor.management.mbean;
 
 import org.filterinterceptor.FilterService;
 import org.filterinterceptor.spi.Filter;
 
 /**
- * This class exposes {@link Filter} Filter methods in a MBean
+ * This class exposes {@link Filter} methods in a MBean
  */
 public class FilterManagement implements FilterManagementMBean {
 
 	private final Filter<?> filter;
 	private final FilterService filterService;
 
-	/* package */FilterManagement(Filter<?> filter, FilterService filterService) {
+	public FilterManagement(Filter<?> filter, FilterService filterService) {
 		this.filter = filter;
 		this.filterService = filterService;
 	}

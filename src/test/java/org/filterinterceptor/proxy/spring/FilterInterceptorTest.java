@@ -10,7 +10,6 @@ import org.filterinterceptor.sample.service.IService;
 import org.filterinterceptor.sample.service.ServiceImpl;
 import org.filterinterceptor.spi.Filter;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import static org.junit.Assert.*;
@@ -20,16 +19,16 @@ import static org.easymock.EasyMock.*;
 public class FilterInterceptorTest {
 
 	@Test
-	public void intercept_withNoExtendToInterfaces() throws Throwable {
-		intercept(false);
+	public void invoke_withNoExtendToInterfaces() throws Throwable {
+		invoke(false);
 	}
 
 	@Test
-	public void intercept_withExtendToInterfaces() throws Throwable {
-		intercept(true);
+	public void invoke_withExtendToInterfaces() throws Throwable {
+		invoke(true);
 	}
 
-	private void intercept(boolean extendToInterfaces) throws NoSuchMethodException, Throwable {
+	private void invoke(boolean extendToInterfaces) throws NoSuchMethodException, Throwable {
 		FilterService fs = createMock(FilterService.class);
 		IService service = createMock(IService.class);
 
@@ -57,37 +56,43 @@ public class FilterInterceptorTest {
 
 	@Test
 	public void springSupport() {
-		ApplicationContext context = new ClassPathXmlApplicationContext(
+		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
 				"org/filterinterceptor/proxy/spring/spring-config.xml");
-		IService service = (IService) context.getBean("service");
-		IService realService = (IService) context.getBean("realService");
-		FilterService filterService = (FilterService) context.getBean("filterService");
 
-		String paramValue = "correctParam";
-		DtoSample2 param = new DtoSample2(0, null, paramValue, null);
+		try {
+			IService service = (IService) context.getBean("service");
+			IService realService = (IService) context.getBean("realService");
+			FilterService filterService = (FilterService) context.getBean("filterService");
 
-		// test controle
-		DtoSample2 ret = realService.test2(param);
-		// check
-		assertTrue("References must be equals", param == ret);
-		assertSame("C property must be unchanged: real service called", paramValue, ret.getC());
+			String paramValue = "correctParam";
+			DtoSample2 param = new DtoSample2(0, null, paramValue, null);
 
-		// test on proxy
-		ret = service.test2(param);
-		// check
-		assertTrue("References must be equals", param == ret);
-		assertNotSame("C property must be reassigned to a new value: filter called", paramValue, ret.getC());
+			// test controle
+			DtoSample2 ret = realService.test2(param);
+			// check
+			assertTrue("References must be equals", param == ret);
+			assertSame("C property must be unchanged: real service called", paramValue, ret.getC());
 
-		// unactivate the filter
-		Filter<?> filter = filterService.getActiveFilter(ServiceImpl.class, "test2");
-		filterService.setFilterActiveStatus(filter, false);
+			// test on proxy
+			ret = service.test2(param);
+			// check
+			assertTrue("References must be equals", param == ret);
+			assertNotSame("C property must be reassigned to a new value: filter called", paramValue, ret.getC());
 
-		// test on proxy
-		param.setC(paramValue);
-		ret = service.test2(param);
-		// check
-		assertTrue("References must be equals", param == ret);
-		assertSame("C property must be unchanged: filter is unactivate", paramValue, ret.getC());
+			// unactivate the filter
+			Filter<?> filter = filterService.getActiveFilter(ServiceImpl.class, "test2");
+			filterService.setFilterActiveStatus(filter, false);
+
+			// test on proxy
+			param.setC(paramValue);
+			ret = service.test2(param);
+			// check
+			assertTrue("References must be equals", param == ret);
+			assertSame("C property must be unchanged: filter is unactivate", paramValue, ret.getC());
+
+		} finally { // TODOJ7 use try on resource
+			context.close();
+		}
 	}
 
 	/*

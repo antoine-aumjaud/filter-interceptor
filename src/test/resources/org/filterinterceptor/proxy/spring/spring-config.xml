@@ -10,6 +10,11 @@
 		<constructor-arg index="0" value="./src/test/resources/others_filters"/>
 	</bean>
 
+	<bean id="filterServiceMBeansRegister" class="org.filterinterceptor.management.FilterServiceMBeansRegister"
+		init-method="initMBean" destroy-method="resetMBean">
+		<constructor-arg index="0" ref="filterService"/>
+	</bean>
+
 	<bean id="serviceInterceptor" class="org.filterinterceptor.proxy.spring.FilterInterceptor">
 		<property name="filterService" ref="filterService" />
 	</bean>

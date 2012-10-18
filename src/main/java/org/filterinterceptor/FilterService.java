@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Observable;
 import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
@@ -30,7 +31,7 @@ import org.slf4j.LoggerFactory;
  * <p>
  * You must call initFilter before first use.
  */
-public class FilterService {
+public class FilterService extends Observable {
 
 	private static final Logger logger = LoggerFactory.getLogger(FilterService.class);
 
@@ -139,6 +140,9 @@ public class FilterService {
 
 		// Build fast access collections
 		buildFilterFastAccessCollections();
+
+		// Notify observer (like MBeanRegister)
+		notifyObservers();
 
 		logger.debug("Search Filters - End");
 	}
@@ -295,6 +299,8 @@ public class FilterService {
 				loadedFilters.add(newFilter);
 				logger.debug("Filter found on service {}: <{}>", newFilter.getService().getSimpleName(),
 						newFilter.getDescription());
+				// Set the a modification on Observable
+				setChanged();
 			}
 		}
 	}

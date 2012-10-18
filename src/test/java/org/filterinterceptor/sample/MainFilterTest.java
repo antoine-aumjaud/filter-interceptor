@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.filterinterceptor.FilterService;
-import org.filterinterceptor.management.FilterServiceManagement;
+import org.filterinterceptor.management.FilterServiceMBeansRegister;
 import org.filterinterceptor.proxy.dynamic.ServiceProxyFactory;
 import org.filterinterceptor.sample.service.DtoSample1;
 import org.filterinterceptor.sample.service.DtoSample2;
@@ -31,7 +31,8 @@ public final class MainFilterTest {
 		}
 
 		// Init JMX
-		FilterServiceManagement.initMBean(filterService, null);
+		FilterServiceMBeansRegister register = new FilterServiceMBeansRegister(filterService);
+		register.initMBean();
 
 		// Create real bean service
 		IService s = new ServiceImpl();
@@ -121,6 +122,11 @@ public final class MainFilterTest {
 				System.out.println("###Action completed###");
 			}
 		}
+
+		// Destroy JMX
+		register.resetMBean();
+
+		// End
 		System.out.println("App closed");
 	}
 

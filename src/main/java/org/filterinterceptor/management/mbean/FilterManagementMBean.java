@@ -1,4 +1,4 @@
-package org.filterinterceptor.management;
+package org.filterinterceptor.management.mbean;
 
 /**
  * This interface is used by JMX API to create MBean
