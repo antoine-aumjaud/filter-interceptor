@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.gt</groupId>
 	<artifactId>filter-interceptor</artifactId>
-	<version>1.13-SNAPSHOT</version>
+	<version>1.13</version>
 	<packaging>jar</packaging>
 
 	<name>Filter Interceptor</name>
@@ -163,7 +163,7 @@
 				<executions>
 					<execution>
 						<id>attach-javadoc</id>
-						<phase>package</phase>
+			<!-- 			<phase>package</phase> -->
 						<goals>
 							<goal>javadoc</goal>
 						</goals>
