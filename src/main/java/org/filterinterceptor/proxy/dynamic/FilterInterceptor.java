@@ -5,7 +5,6 @@ import java.lang.reflect.Method;
 
 import org.filterinterceptor.FilterService;
 
-
 /**
  * This class is used by java dynamic proxy to redirect all service methods call
  * on ServiceFilter invoke method
@@ -13,8 +12,8 @@ import org.filterinterceptor.FilterService;
  * @param <T>
  *            the type of the Service
  * 
- * @See ServiceProxyFactory
- * @See FilterService
+ * @see ServiceProxyFactory
+ * @see FilterService
  */
 public class FilterInterceptor<T> implements InvocationHandler {
 
