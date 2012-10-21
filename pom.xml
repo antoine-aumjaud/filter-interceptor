@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.gt</groupId>
+	<groupId>org.filter-interceptor</groupId>
 	<artifactId>filter-interceptor</artifactId>
 	<version>1.14-SNAPSHOT</version>
 	<packaging>jar</packaging>
@@ -9,6 +9,18 @@
 	<name>Filter Interceptor</name>
 	<description>Filter interceptor intercepts defined methods on a service to applied dynamically a Filter.</description>
 	<url>https://github.com/antoine-aumjaud/filter-interceptor/blob/master/README.md</url>
+	<inceptionYear>2012</inceptionYear>
+
+<!--
+ 	<mailingLists>
+		<mailingList>
+			<name>Developers List</name>
+			<subscribe></subscribe>
+			<unsubscribe></unsubscribe>
+			<post></post>
+		</mailingList>
+	</mailingLists>
+ -->	
 
 	<licenses>
 		<license>
@@ -22,7 +34,7 @@
 	<scm>
 		<connection>scm:git:git@github.com:antoine-aumjaud/filter-interceptor.git</connection>
 		<developerConnection>scm:git:git@github.com:antoine-aumjaud/filter-interceptor.git</developerConnection>
-		<url>http://github.com/antoine-aumjaud/filter-interceptor</url>
+		<url>https://github.com/antoine-aumjaud/filter-interceptor</url>
 	</scm>
 
 	<dependencies>
