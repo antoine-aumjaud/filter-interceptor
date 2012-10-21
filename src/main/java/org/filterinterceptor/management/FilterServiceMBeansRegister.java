@@ -31,10 +31,11 @@ public class FilterServiceMBeansRegister implements Observer {
 	 * Default domain used in JMX server
 	 */
 	public static final String MBEAN_DEFAULT_DOMAIN = "FilterService";
+	public static final MBeanServer MBEAN_DEFAULT_SERVER = ManagementFactory.getPlatformMBeanServer();
 
 	private final FilterService filterService;
 	private String mBeanDomain = MBEAN_DEFAULT_DOMAIN;
-	private MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
+	private MBeanServer mbs = MBEAN_DEFAULT_SERVER;
 
 	/**
 	 * Construct Register with default domain value
@@ -62,7 +63,6 @@ public class FilterServiceMBeansRegister implements Observer {
 		this(filterService);
 		if (mBeanDomain != null && mBeanDomain.length() != 0)
 			this.mBeanDomain = mBeanDomain;
-
 	}
 
 	/**
@@ -90,7 +90,6 @@ public class FilterServiceMBeansRegister implements Observer {
 	 * Unpublish MBeans in JMX Server
 	 */
 	public void resetMBean() {
-
 		// Unregister FilterService
 		registerFilterServiceMBean(false);
 

@@ -50,4 +50,26 @@ public class FilterManagement implements FilterManagementMBean {
 		return filter.getService().getSimpleName();
 	}
 
+	/*
+	 * Implementation for test (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		FilterManagement fs2 = (FilterManagement) obj;
+		return fs2.filterService == filterService && fs2.filter == filter;
+	}
+
+	/*
+	 * Implementation to remove warning (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		assert false;
+		return 42;
+	}
+
 }
