@@ -178,7 +178,6 @@
 	</build>
 
 	<profiles>
-		
 		<!-- create other artifacts and sign artifacts when perform a release -->
 		<profile>
 			<id>release-artifacts</id>
@@ -201,11 +200,13 @@
 							<execution>
 								<id>attach-javadoc</id>
 								<phase>package</phase>
-								<goals><goal>jar</goal></goals>
+								<goals>
+									<goal>jar</goal>
+								</goals>
 							</execution>
 						</executions>
 					</plugin>
-				
+	
 					<!-- sign artifacts at verify step -->
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
@@ -214,7 +215,9 @@
 							<execution>
 								<id>sign-artifacts</id>
 								<phase>verify</phase>
-								<goals><goal>sign</goal></goals>
+								<goals>
+									<goal>sign</goal>
+								</goals>
 							</execution>
 						</executions>
 					</plugin>
@@ -222,7 +225,4 @@
 			</build>
 		</profile>
 	</profiles>
-	<!-- 
-	source javadoc sign at release step or at verify ?
-	 -->
-</project>
+	</project>
