@@ -116,6 +116,12 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>2.3.2</version>
+					<configuration>
+						<!-- set compiler version -->
+						<source>1.6</source>
+						<target>1.6</target>
+						<!-- TODOJ7: change version -->
+					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -126,6 +132,9 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
 					<version>2.9</version>
+					<configuration>
+						<show>public</show>
+					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -136,22 +145,14 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-release-plugin</artifactId>
 					<version>2.3.2</version>
+					<configuration>
+						<tagNameFormat>v@{project.version}</tagNameFormat>
+					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
 
 		<plugins>
-			<!-- set compiler version -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-					<!-- TODOJ7: change version -->
-				</configuration>
-			</plugin>
-			
 			<!-- add sources at package step -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -164,16 +165,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			
-			<!-- release configuration -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-				<configuration>
-					<tagNameFormat>v@{project.version}</tagNameFormat>
-				</configuration>
-			</plugin>
-	
 		</plugins>
 	</build>
 
@@ -193,9 +184,6 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-javadoc-plugin</artifactId>
-						<configuration>
-							<show>public</show>
-						</configuration>
 						<executions>
 							<execution>
 								<id>attach-javadoc</id>
