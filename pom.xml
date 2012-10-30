@@ -20,8 +20,8 @@
 
 	
 	<scm>
-		<connection>scm:git:git://github.com/antoine-aumjaud/filter-interceptor.git</connection>
-		<developerConnection>scm:git:git://github.com/antoine-aumjaud/filter-interceptor.git</developerConnection>
+		<connection>scm:git:git@github.com:antoine-aumjaud/filter-interceptor.git</connection>
+		<developerConnection>scm:git:git@github.com:antoine-aumjaud/filter-interceptor.git</developerConnection>
 		<url>http://github.com/antoine-aumjaud/filter-interceptor</url>
 	</scm>
 
