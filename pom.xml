@@ -109,9 +109,22 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
+
 	<build>
 		<pluginManagement>
 			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-enforcer-plugin</artifactId>
+					<version>1.1.1</version>
+					<configuration>
+						<rules>
+              <!-- set needed JDK -->
+						  <requireJavaVersion>1.5</requireJavaVersion>
+  						<!-- TODOJ7: change version -->
+            </rules>
+					</configuration>
+				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
@@ -153,7 +166,20 @@
 		</pluginManagement>
 
 		<plugins>
-			<!-- add sources at package step -->
+      
+      <!-- check project rules -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<executions>
+				  <execution>
+				    <id>enforce-rules</id>
+            <goals><goal>enforce</goal></goals>
+          </execution>
+			  </executions>
+			</plugin>
+		
+      <!-- add sources at package step -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
