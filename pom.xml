@@ -120,7 +120,7 @@
 					<configuration>
 						<rules>
               <!-- set needed JDK -->
-						  <requireJavaVersion>1.5</requireJavaVersion>
+						  <requireJavaVersion>1.6</requireJavaVersion>
   						<!-- TODOJ7: change version -->
             </rules>
 					</configuration>
