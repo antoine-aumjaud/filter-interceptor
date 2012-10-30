@@ -11,3 +11,7 @@
 .project
 .classpath
 .settings/
+
+# Releases Files #
+release.properties
+pom.xml.releaseBackup
