@@ -7,8 +7,10 @@
 	<packaging>jar</packaging>
 
 	<name>Filter Interceptor</name>
-	<description>Filter interceptor intercepts defined methods on a service to applied dynamically a Filter.</description>
-	<url>https://github.com/antoine-aumjaud/filter-interceptor/blob/master/README.md</url>
+	<description>Filter interceptor intercepts defined methods on a service
+		to applied dynamically a Filter.</description>
+	<url>https://github.com/antoine-aumjaud/filter-interceptor/blob/master/README.md
+	</url>
 
 	<licenses>
 		<license>
@@ -18,10 +20,12 @@
 		</license>
 	</licenses>
 
-	
+
 	<scm>
-		<connection>scm:git:git@github.com:antoine-aumjaud/filter-interceptor.git</connection>
-		<developerConnection>scm:git:git@github.com:antoine-aumjaud/filter-interceptor.git</developerConnection>
+		<connection>scm:git:git@github.com:antoine-aumjaud/filter-interceptor.git
+		</connection>
+		<developerConnection>scm:git:git@github.com:antoine-aumjaud/filter-interceptor.git
+		</developerConnection>
 		<url>http://github.com/antoine-aumjaud/filter-interceptor</url>
 	</scm>
 
@@ -38,7 +42,7 @@
 			<version>1.6.6</version>
 			<optional>true</optional>
 		</dependency>
-		
+
 		<!-- spring support -->
 		<dependency> <!-- for @Required Spring annotation -->
 			<groupId>org.springframework</groupId>
@@ -109,9 +113,22 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
+
 	<build>
 		<pluginManagement>
 			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-enforcer-plugin</artifactId>
+					<version>1.1.1</version>
+					<configuration>
+						<rules>
+							<!-- set needed JDK -->
+							<requireJavaVersion>1.6</requireJavaVersion>
+							<!-- TODOJ7: change version -->
+						</rules>
+					</configuration>
+				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
@@ -153,6 +170,21 @@
 		</pluginManagement>
 
 		<plugins>
+
+			<!-- check project rules -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>enforce-rules</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 			<!-- add sources at package step -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -161,7 +193,9 @@
 					<execution>
 						<id>attach-sources</id>
 						<phase>package</phase>
-						<goals><goal>jar-no-fork</goal></goals>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>
@@ -188,11 +222,13 @@
 							<execution>
 								<id>attach-javadoc</id>
 								<phase>package</phase>
-								<goals><goal>jar</goal></goals>
+								<goals>
+									<goal>jar</goal>
+								</goals>
 							</execution>
 						</executions>
 					</plugin>
-	
+
 					<!-- sign artifacts at verify step -->
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
@@ -211,4 +247,4 @@
 			</build>
 		</profile>
 	</profiles>
-	</project>
+</project>
