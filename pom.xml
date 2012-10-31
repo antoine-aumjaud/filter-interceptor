@@ -7,10 +7,9 @@
 	<packaging>jar</packaging>
 
 	<name>Filter Interceptor</name>
-	<description>Filter interceptor intercepts defined methods on a service
-		to applied dynamically a Filter.</description>
-	<url>https://github.com/antoine-aumjaud/filter-interceptor/blob/master/README.md
-	</url>
+	<description>Filter interceptor intercepts defined methods on a service to applied dynamically a Filter.</description>
+	<url>https://github.com/antoine-aumjaud/filter-interceptor/blob/master/README.md</url>
+	<inceptionYear>2012</inceptionYear>
 
 	<licenses>
 		<license>
@@ -19,13 +18,10 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-
-
+	
 	<scm>
-		<connection>scm:git:git@github.com:antoine-aumjaud/filter-interceptor.git
-		</connection>
-		<developerConnection>scm:git:git@github.com:antoine-aumjaud/filter-interceptor.git
-		</developerConnection>
+		<connection>scm:git:git@github.com:antoine-aumjaud/filter-interceptor.git</connection>
+		<developerConnection>scm:git:git@github.com:antoine-aumjaud/filter-interceptor.git</developerConnection>
 		<url>http://github.com/antoine-aumjaud/filter-interceptor</url>
 	</scm>
 
@@ -171,7 +167,7 @@
 
 		<plugins>
 
-			<!-- check project rules -->
+			<!-- check maven project rules -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
