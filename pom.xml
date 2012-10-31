@@ -113,18 +113,18 @@
 	<build>
 		<pluginManagement>
 			<plugins>
+				<!-- 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-enforcer-plugin</artifactId>
 					<version>1.1.1</version>
 					<configuration>
 						<rules>
-							<!-- set needed JDK -->
-							<requireJavaVersion>1.7</requireJavaVersion>
-							<!-- TODOJ7: change version -->
+							<requireJavaVersion>1.6</requireJavaVersion>
 						</rules>
 					</configuration>
 				</plugin>
+				-->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
@@ -167,7 +167,7 @@
 
 		<plugins>
 
-			<!-- check maven project rules -->
+			<!-- check maven project rules 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
@@ -179,7 +179,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin>-->
 
 			<!-- add sources at package step -->
 			<plugin>
