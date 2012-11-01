@@ -143,7 +143,7 @@ public class FilterServiceMBeansRegister implements Observer {
 		} catch (InstanceAlreadyExistsException e) {
 			logger.warn("Bean already registered: " + e.getMessage(), e);
 		} catch (MBeanRegistrationException e) {
-			logger.warn("Can't register bean: " + e.getMessage(), e);
+			logger.warn("Can't register/unregister bean: " + e.getMessage(), e);
 		} catch (NotCompliantMBeanException e) {
 			logger.warn("Bean is not compliant: " + e.getMessage(), e);
 		} catch (InstanceNotFoundException e) {

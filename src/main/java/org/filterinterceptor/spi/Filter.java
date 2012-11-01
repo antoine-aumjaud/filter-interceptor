@@ -112,10 +112,7 @@ public abstract class Filter<T> implements Comparable<Filter<T>> {
 			throw new NullPointerException("Other filter to compare is null");
 
 		int ret = description.compareTo(other.description);
-		return (ret == 0) ?
-		// TODOJ7: Integer.compare(getPriority(), other.getPriority())
-		((Integer) getPriority()).compareTo(other.getPriority())
-				: ret;
+		return (ret == 0) ? Integer.compare(getPriority(), other.getPriority()) : ret;
 	};
 
 	/*
