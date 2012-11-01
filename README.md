@@ -1,18 +1,52 @@
-filter-interceptor
-==================
+Introduction:
+=============
 
-Add dynamically filter to services at runtime
+filter-interceptor is a small API witch could introduce a proxy between a service and a client of this service.
+This proxy search at each call of a service method if a Filters exists and, if it is the case, calls the method Filter, 
+otherwise call the method service.
+
+This Filter could: 
+* modify method parameters before call the real service, 
+* modify treatment himself (do not call the real service)
+* modify returned values to the client of the service.
+
+Filters have been search on the application start in the classpath and in all JAR files presents in a specified folder.
+Filters can been reload from this folder. So you can add new Filters on runtime !
+Only one Filter can run and override a service method, each Filter has a priority and the Filter with the hightest on this method is used.
+
+Filters could be managed by API or by JMX beans. So it is possible to desactivate/reactivate a Filter, change its priority, 
+or research new Filters in the specified directory on runtime.
 
 
 Technology used:
-----------------
-* Java 6
-* SPI
-* SLF4J
-* Spring AOP 
+================
+Main API:
+---------
+* Java 7                    - compiled with JDK 7, but target is JRE 6
+* SPI                       - (Service Provider Interface) to search automatically Filters in classpath
+* SLF 4J                    - to log information but let the choice of the client application to choice his logger implementation (like log4J, LogBack, JCL, JUL...)
 
-For test: 
-* JUnit
-* EasyMock
-* Logback
-* Spring IOC
+Integration:
+------------
+* Java Proxy                - for basic integration
+* Spring AOP                - for integration with Spring project
+
+Developper tools:
+-----------------
+* Maven 3                   - to manage project build, releases and deployment
+* Git                       - for SCM
+* Eclipse Indigo            - to write sources and run tests
+* Sonatype Maven repository - to publish the project
+* PGP                       - to sign artifacts (classes JAR, Javadoc JAR and sources JAR)
+
+Tests: 
+----------
+* JUnit 4                   - to create tests
+* EasyMock 3                - to do real unitary tests
+* LogBack                   - to log informations (native implementation of SLF4J)
+* Spring IOC                - to test Spring integration
+
+
+What's coming
+==============
+* Add more solution to integrate the Filters like HessianFilter or CXFFilter.
