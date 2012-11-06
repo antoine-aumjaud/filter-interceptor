@@ -227,14 +227,21 @@ public class FilterService extends Observable {
 			logger.error("Exception while try to execute filter: " + e.getMessage(), e);
 		}
 
-		if (proxy != null) {
-			// Call the method proxy
-			Object ret = method.invoke(proxy, args);
-			logger.info("Filter <{}> applied", filter.getDescription());
-			return ret;
-		} else {
-			logger.debug("Invoke real service method");
-			return method.invoke(service, args);
+		try {
+			if (proxy != null) {
+				// Call the method proxy
+				logger.info("Invoke Filter <{}>", filter.getDescription());
+				Object ret = method.invoke(proxy, args);
+				return ret;
+			} else {
+				logger.debug("Invoke real service method");
+				return method.invoke(service, args);
+			}
+		} catch (Throwable t) {
+			if (t.getCause() != null)
+				throw t.getCause();
+			else
+				throw t;
 		}
 	}
 
