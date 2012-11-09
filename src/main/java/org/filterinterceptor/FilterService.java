@@ -330,6 +330,8 @@ public class FilterService extends Observable {
 	/**
 	 * Build a the access collection to improve performances
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	// TODOJ7: to remove
 	private void buildFilterFastAccessCollections() {
 
 		Lock lock = lockToFilterFastAccessCollections.writeLock();
@@ -339,8 +341,8 @@ public class FilterService extends Observable {
 			// LIST
 			allFilters = new ArrayList<Filter<?>>(loadedFilters);
 			// Sort Filters
-			Collections.sort(allFilters);
-
+			Collections.sort((List) allFilters); // TODOJ7: cast for JDK 1.6 fix
+													// complication error
 			// Create a RO list
 			allFilters = Collections.unmodifiableList(allFilters);
 

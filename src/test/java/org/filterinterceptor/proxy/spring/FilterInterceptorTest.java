@@ -10,7 +10,6 @@ import org.filterinterceptor.sample.service.IService;
 import org.filterinterceptor.sample.service.ServiceImpl;
 import org.filterinterceptor.spi.Filter;
 import org.junit.Test;
-import org.springframework.beans.BeansException;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import static org.junit.Assert.*;
@@ -58,8 +57,11 @@ public class FilterInterceptorTest {
 	@Test
 	public void springSupport() {
 
-		try (ClosableClassPathXmlApplicationContext context = new ClosableClassPathXmlApplicationContext(
-				"org/filterinterceptor/proxy/spring/spring-config.xml");) {
+		//TODOJ7: change try
+		ClassPathXmlApplicationContext context = null;
+		// try (ClosableClassPathXmlApplicationContext context = new ClosableClassPathXmlApplicationContext("org/filterinterceptor/proxy/spring/spring-config.xml");) {
+		try {
+			context = new ClassPathXmlApplicationContext("org/filterinterceptor/proxy/spring/spring-config.xml");
 
 			IService service = (IService) context.getBean("service");
 			IService realService = (IService) context.getBean("realService");
@@ -90,6 +92,9 @@ public class FilterInterceptorTest {
 			// check
 			assertTrue("References must be equals", param == ret);
 			assertSame("C property must be unchanged: filter is unactivate", paramValue, ret.getC());
+		} finally { //TODOJ7: remove
+			if (context != null)
+				context.close();
 		}
 	}
 
@@ -137,10 +142,11 @@ public class FilterInterceptorTest {
 	 * A new {@link ClassPathXmlApplicationContext} which implements
 	 * {@link AutoCloseable}
 	 */
-	class ClosableClassPathXmlApplicationContext extends ClassPathXmlApplicationContext implements AutoCloseable {
+	//TODOJ7: reactivate this code 
+	/*class ClosableClassPathXmlApplicationContext extends ClassPathXmlApplicationContext implements AutoCloseable {
 
 		public ClosableClassPathXmlApplicationContext(String configLocation) throws BeansException {
 			super(configLocation);
 		}
-	}
+	}*/
 }
