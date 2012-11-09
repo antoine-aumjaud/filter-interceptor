@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.filter-interceptor</groupId>
 	<artifactId>filter-interceptor</artifactId>
-	<version>1.15-SNAPSHOT</version>
+	<version>1.14-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>Filter Interceptor</name>
@@ -22,7 +22,7 @@
 	<scm>
 		<connection>scm:git:git@github.com:antoine-aumjaud/filter-interceptor.git</connection>
 		<developerConnection>scm:git:git@github.com:antoine-aumjaud/filter-interceptor.git</developerConnection>
-		<url>https://github.com/antoine-aumjaud/filter-interceptor</url>
+		<url>http://github.com/antoine-aumjaud/filter-interceptor</url>
 	</scm>
 
 	<dependencies>
@@ -113,27 +113,27 @@
 	<build>
 		<pluginManagement>
 			<plugins>
+				<!-- 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-enforcer-plugin</artifactId>
 					<version>1.1.1</version>
 					<configuration>
 						<rules>
-							<!-- set needed JDK -->
-							<requireJavaVersion>
-								<version>1.7</version>
-							</requireJavaVersion>
+							<requireJavaVersion>1.6</requireJavaVersion>
 						</rules>
 					</configuration>
 				</plugin>
+				-->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>2.3.2</version>
 					<configuration>
-						<!-- set compiler versions -->
-						<source>1.7</source>
+						<!-- set compiler version -->
+						<source>1.6</source>
 						<target>1.6</target>
+						<!-- TODOJ7: change version -->
 					</configuration>
 				</plugin>
 				<plugin>
@@ -162,17 +162,12 @@
 						<tagNameFormat>v@{project.version}</tagNameFormat>
 					</configuration>
 				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-eclipse-plugin</artifactId>
-					<version>2.9</version>
-				</plugin>
 			</plugins>
 		</pluginManagement>
 
 		<plugins>
 
-			<!-- check maven project rules -->
+			<!-- check maven project rules 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
@@ -184,7 +179,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin>-->
 
 			<!-- add sources at package step -->
 			<plugin>
