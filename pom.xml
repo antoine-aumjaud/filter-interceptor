@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.filter-interceptor</groupId>
 	<artifactId>filter-interceptor</artifactId>
-	<version>1.15</version>
+	<version>1.15-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>Filter Interceptor</name>
@@ -23,8 +23,7 @@
 		<connection>scm:git:git://github.com/antoine-aumjaud/filter-interceptor.git</connection>
 		<developerConnection>scm:git:[fetch=]=http://github.com/antoine-aumjaud/filter-interceptor.git[push=]https://github.com/antoine-aumjaud/filter-interceptor.git</developerConnection>
 		<url>http://github.com/antoine-aumjaud/filter-interceptor</url>
-	  <tag>v1.15</tag>
-  </scm>
+	</scm>
 
 	<dependencies>
 		<!-- logs -->
