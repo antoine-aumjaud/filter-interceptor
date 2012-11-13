@@ -1,17 +1,17 @@
 filter-interceptor 
 ==================
 
-filter-interceptor is a small API witch could introduce a proxy between a service and a client of this service.
+filter-interceptor is a small API witch could introduce a ***proxy between a service and a client*** of this service.
 This proxy search at each call of a service method if a Filters exists and, if it is the case, calls the method Filter, 
 otherwise call the method service.
 
 This Filter could: 
-* modify method parameters before call the real service, 
-* modify treatment himself (do not call the real service)
-* modify returned values to the client of the service.
+* modify **method parameters** before call the real service, 
+* modify **treatment** himself (do not call the real service)
+* modify **returned values** to the client of the service.
 
 Filters have been search on the application start in the classpath and in all JAR files presents in a specified folder.
-Filters can been reload from this folder. So you can add new Filters on runtime !
+Filters can been reload from this folder. So ***you can add new Filters on runtime !***
 Only one Filter can run and override a service method, each Filter has a priority and the Filter with the hightest on this method is used.
 
 Filters could be managed by API or by JMX beans. So it is possible to desactivate/reactivate a Filter, change its priority, 
