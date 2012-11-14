@@ -27,7 +27,7 @@ or search and load new Filters in the specified directory on runtime.
 
 ## Example
 
-1. Create the filter service
+1/ Create the filter service
 ~~~~java 
 		//Create a filter service
 		FilterService filterService = new FilterService("./src/test/resources/others_filters");
@@ -35,21 +35,21 @@ or search and load new Filters in the specified directory on runtime.
 		filterService.initFilters();
 ~~~~
 
-2. Create a filtered service
+2/ Create a filtered service
 ~~~~java 
 		// Create proxy service 
 		// 's' is the real service
 		ServiceProxyFactory serviceProxyFactory = new ServiceProxyFactory(filterService);
 		IService sProxy = serviceProxyFactory.createProxy(s, false);
 ~~~~
+ This create a Java Proxy, you can use other integration methods like: Spring AOP, CGLIB or WebServices Filters
 
-This create a Java Proxy, you can use other integration methods like: Spring AOP, CGLIB or WebServices Filters
-
-3. (optional) Initialize JMX:
+3/ (optional) Initialize JMX:
 ~~~~java 
 		FilterServiceMBeansRegister register = new FilterServiceMBeansRegister(filterService);
 		register.initMBean();
 ~~~~
+
 Do not forget at the application stop to unregister MBeans by following command:
 ~~~~java 
 		register.resetMBean();
@@ -70,6 +70,11 @@ You could manage filters too by API or JMX:
 * change the filter priority 
 
 You can find a complete sample in the test sources [here](https://github.com/antoine-aumjaud/filter-interceptor/blob/master/src/org/filterinterceptor/sample/MainFilterTest.java)
+
+---
+
+## What's coming
+* Add more solution to integrate the Filters like *HessianFilter* or *CXFFilter*.
 
 ---
 
@@ -96,12 +101,6 @@ You can find a complete sample in the test sources [here](https://github.com/ant
 * **EasyMock 3**                - to create real unitary tests
 * **LogBack**                   - to log informations (native implementation of SLF4J)
 * **Spring IOC**                - to test Spring integration
-
-
----
-
-## What's coming
-* Add more solution to integrate the Filters like *HessianFilter* or *CXFFilter*.
 
 ---
 
