@@ -81,40 +81,40 @@ You can find a complete sample in the test sources [here](https://github.com/ant
 ## Technology used
 
 ### Main API: 
-* **Java 6**                    - compiled with JDK 6, and run on a JRE 6
-* **SPI**                       - (Service Provider Interface) to search automatically Filters classes in classloader
-* **SLF 4J**                    - interface to log information, but let the choice to client application of the implementation used (like log4J, LogBack, JCL, JUL...)
+* **Java 6**                    : compiled with JDK 6, and run on a JRE 6
+* **SPI**                       : (Service Provider Interface) to search automatically Filters classes in classloader
+* **SLF 4J**                    : interface to log information, but let the choice to client application of the implementation used (like log4J, LogBack, JCL, JUL...)
 
 ### Integration: 
-* **Java Proxy**                - for basic integration
-* **Spring AOP**                - for integration with Spring project
+* **Java Proxy**                : for basic integration
+* **Spring AOP**                : for integration with Spring project
 
 ### Developper tools: 
-* **Maven 3**                   - to manage project build and releases
-* **Git**                       - for SCM
-* **Eclipse Indigo**            - to write sources and run tests
-* **Sonatype Maven repository** - to publish the project
-* **PGP**                       - to sign artifacts (classes JAR, Javadoc JAR and sources JAR)
+* **Maven 3**                   : to manage project build and releases
+* **Git**                       : for SCM
+* **Eclipse Indigo**            : to write sources and run tests
+* **Sonatype Maven repository** : to publish the project
+* **PGP**                       : to sign artifacts (classes JAR, Javadoc JAR and sources JAR)
 
 ### Tests:
-* **JUnit 4**                   - to create tests
-* **EasyMock 3**                - to create real unitary tests
-* **LogBack**                   - to log informations (native implementation of SLF4J)
-* **Spring IOC**                - to test Spring integration
+* **JUnit 4**                   : to create tests
+* **EasyMock 3**                : to create real unitary tests
+* **LogBack**                   : to log informations (native implementation of SLF4J)
+* **Spring IOC**                : to test Spring integration
 
 ---
 
 ## Links
-* SPI
- * JSE reference: http://docs.oracle.com/javase/tutorial/sound/SPI-intro.html
- * A very good post: http://thecodersbreakfast.net/index.php?post/2008/12/26/Java-%3A-pr%C3%A9sentation-du-Service-Provider-API
-* Annotations 
- * JSE reference: http://docs.oracle.com/javase/tutorial/java/javaOO/annotations.html
-* Aspect
- * Spring AOP: http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/aop-api.html
- * JSE Proxy: http://docs.oracle.com/javase/1.4.2/docs/api/java/lang/reflect/Proxy.html
-* Logs
- * SLF4J: http://www.slf4j.org/
- * LOGBack: http://logback.qos.ch/ - http://blog.soat.fr/2010/06/la-mort-de-log4j/
+### SPI
+* **JSE reference**             : http://docs.oracle.com/javase/tutorial/sound/SPI-intro.html
+* **A very good post**          : http://thecodersbreakfast.net/index.php?post/2008/12/26/Java-%3A-pr%C3%A9sentation-du-Service-Provider-API
+### Annotations 
+* **JSE reference**             : http://docs.oracle.com/javase/tutorial/java/javaOO/annotations.html
+### Aspect
+* **Spring AOP**                : http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/aop-api.html
+* **JSE Proxy**                 : http://docs.oracle.com/javase/1.4.2/docs/api/java/lang/reflect/Proxy.html
+### Logs
+* **SLF4J**                     : http://www.slf4j.org/
+* **LOGBack**                   : http://logback.qos.ch/ - http://blog.soat.fr/2010/06/la-mort-de-log4j/
  
  
