@@ -69,7 +69,7 @@ You could manage filters too by API or JMX:
 * activate or desactivate a filter
 * change the filter priority 
 
-You can find a complete sample in the test sources [here](https://github.com/antoine-aumjaud/filter-interceptor/blob/master/src/org/filterinterceptor/sample/MainFilterTest.java)
+You can find a complete sample in the test sources [here](https://github.com/antoine-aumjaud/filter-interceptor/blob/master/src/test/java/org/filterinterceptor/sample/MainFilterTest.java)
 
 ---
 
