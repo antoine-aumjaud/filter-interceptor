@@ -1,7 +1,7 @@
 filter-interceptor 
 ==================
 
-**The aim of this API is to provide a solution to fix sharply a production problem without any downtime**
+**The aim of this API is to provide a solution to fix quickly a production problem without any downtime**.
 
 *filter-interceptor* is a small API witch could introduce a **proxy between a service and a client** of this service.
 This proxy search at each call of a service method if a Filters exists and, if it is the case, calls the method Filter, 
@@ -80,23 +80,23 @@ You can find a complete sample in the test sources [here](https://github.com/ant
 
 ## Technology used
 
-### Main API: 
+### Main API
 * **Java 6**                    : compiled with JDK 6, and run on a JRE 6
 * **SPI**                       : (Service Provider Interface) to search automatically Filters classes in classloader
 * **SLF 4J**                    : interface to log information, but let the choice to client application of the implementation used (like log4J, LogBack, JCL, JUL...)
 
-### Integration: 
+### Integration
 * **Java Proxy**                : for basic integration
 * **Spring AOP**                : for integration with Spring project
 
-### Developper tools: 
+### Developper tools
 * **Maven 3**                   : to manage project build and releases
 * **Git**                       : for SCM
 * **Eclipse Indigo**            : to write sources and run tests
 * **Sonatype Maven repository** : to publish the project
 * **PGP**                       : to sign artifacts (classes JAR, Javadoc JAR and sources JAR)
 
-### Tests:
+### Tests
 * **JUnit 4**                   : to create tests
 * **EasyMock 3**                : to create real unitary tests
 * **LogBack**                   : to log informations (native implementation of SLF4J)
