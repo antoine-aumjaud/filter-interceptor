@@ -22,6 +22,55 @@ The overrided method(s) must be flag with an annotation. Such, refactoring on se
 Filters could be managed by API or by JMX beans. So it is possible to desactivate/reactivate a Filter, change its priority, 
 or search and load new Filters in the specified directory on runtime.
 
+
+---
+
+## Example
+
+1. Create the filter service
+~~~~java 
+		//Create a filter service
+		FilterService filterService = new FilterService("./src/test/resources/others_filters");
+		//Load filters
+		filterService.initFilters();
+~~~~
+
+2. Create a filtered service
+~~~~java 
+		// Create proxy service 
+		// 's' is the real service
+		ServiceProxyFactory serviceProxyFactory = new ServiceProxyFactory(filterService);
+		IService sProxy = serviceProxyFactory.createProxy(s, false);
+~~~~
+
+This create a Java Proxy, you can use other integration methods like: Spring AOP, CGLIB or WebServices Filters
+
+3. (optional) Initialize JMX:
+~~~~java 
+		FilterServiceMBeansRegister register = new FilterServiceMBeansRegister(filterService);
+		register.initMBean();
+~~~~
+Do not forget at the application stop to unregister MBeans by following command:
+~~~~java 
+		register.resetMBean();
+~~~~
+
+After this you can call your service method
+~~~~java 
+	s.test1();
+~~~~
+
+CREATE A FILTER
+JAR
+
+You could manage filters too by API or JMX:
+* get filters list
+* reload new filters
+* activate or desactivate a filter
+* change the filter priority 
+
+You can find a complete sample in the test sources [here](https://github.com/antoine-aumjaud/filter-interceptor/blob/master/src/org/filterinterceptor/sample/MainFilterTest.java)
+
 ---
 
 ## Technology used
@@ -54,66 +103,19 @@ or search and load new Filters in the specified directory on runtime.
 ## What's coming
 * Add more solution to integrate the Filters like *HessianFilter* or *CXFFilter*.
 
-
----
-
-## Example
-
-1. Create the filter service
-'''java 
-		//Create a filter service
-		FilterService filterService = new FilterService("./src/test/resources/others_filters");
-		//Load filters
-		filterService.initFilters();
-'''
-
-2. Create a filtered service
-'''java 
-		// Create proxy service 
-		// 's' is the real service
-		ServiceProxyFactory serviceProxyFactory = new ServiceProxyFactory(filterService);
-		IService sProxy = serviceProxyFactory.createProxy(s, false);
-'''
-
-This create a Java Proxy, you can use other integration methods like: Spring AOP, CGLIB or WebServices Filters
-
-3. (optional) Initialize JMX:
-'''java 
-		FilterServiceMBeansRegister register = new FilterServiceMBeansRegister(filterService);
-		register.initMBean();
-'''
-Do not forget at the application stop to unregister MBeans by following command:
-'''java 
-		register.resetMBean();
-'''
-
-After this you can call your service method
-'''java 
-	s.test1();
-'''
-
-You could manage filters too by API or JMX:
-* get filters list
-* reload new filters
-* activate or desactivate a filter
-* change the filter priority 
-
-You can find a complete sample in the test sources [here](https://github.com/antoine-aumjaud/filter-interceptor/blob/master/src/org/filterinterceptor/sample/MainFilterTest.java)
-
 ---
 
 ## Links
 * SPI
- * JDK reference: http://docs.oracle.com/javase/tutorial/sound/SPI-intro.html
+ * JSE reference: http://docs.oracle.com/javase/tutorial/sound/SPI-intro.html
  * A very good post: http://thecodersbreakfast.net/index.php?post/2008/12/26/Java-%3A-pr%C3%A9sentation-du-Service-Provider-API
 * Annotations 
- * JDK reference: http://docs.oracle.com/javase/tutorial/java/javaOO/annotations.html
+ * JSE reference: http://docs.oracle.com/javase/tutorial/java/javaOO/annotations.html
 * Aspect
  * Spring AOP: http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/aop-api.html
- * Java Proxy: http://docs.oracle.com/javase/1.4.2/docs/api/java/lang/reflect/Proxy.html
- * Java Proxy implementation: http://alain-defrance.developpez.com/articles/Java/J2SE/implementation-dynamique-java-proxy-invocationhandler/
+ * JSE Proxy: http://docs.oracle.com/javase/1.4.2/docs/api/java/lang/reflect/Proxy.html
 * Logs
  * SLF4J: http://www.slf4j.org/
- * LogBack: http://logback.qos.ch/ - http://blog.soat.fr/2010/06/la-mort-de-log4j/
+ * LOGBack: http://logback.qos.ch/ - http://blog.soat.fr/2010/06/la-mort-de-log4j/
  
  
