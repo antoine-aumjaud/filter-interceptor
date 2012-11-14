@@ -13,7 +13,7 @@ This Filter could:
 * modify **returned values** to the client of the service.
 
 Filters have been search on the application start in the classpath and in all JAR files presents in a specified folder.
-Filters can been reload from this folder. So ***you can add new Filters on runtime !***
+Filters can be reload from this folder. So ***you can add new Filters on runtime !***
 Only one Filter can run and override a service method, each Filter has a priority and the Filter with the highest on this method is used.
 
 A Filter is a service implementation (i.e: implements the same interface or extends the service class). 
@@ -25,7 +25,8 @@ or search and load new Filters in the specified directory on runtime.
 
 ---
 
-## Example
+Example
+-------
 
 **1/ Create the filter service**
 ~~~~java 
@@ -63,7 +64,7 @@ After this you can call your service method
 CREATE A FILTER
 JAR
 
-You could manage filters too by API or JMX:
+You could manage filters both by API or JMX if initialize:
 * get filters list
 * reload new filters
 * activate or desactivate a filter
@@ -73,12 +74,14 @@ You can find a complete sample in the test sources [here](https://github.com/ant
 
 ---
 
-## What's coming
+What's coming
+-------------
 * Add more solution to integrate the Filters like *HessianFilter* or *CXFFilter*.
 
 ---
 
-## Technology used
+Technology used
+---------------
 
 ### Main API
 * **Java 6**                    : compiled with JDK 6, and run on a JRE 6
@@ -104,7 +107,8 @@ You can find a complete sample in the test sources [here](https://github.com/ant
 
 ---
 
-## Links
+Links
+-----
 
 ### SPI
 * **JSE reference**             : http://docs.oracle.com/javase/tutorial/sound/SPI-intro.html
