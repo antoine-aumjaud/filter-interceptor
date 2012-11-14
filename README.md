@@ -27,7 +27,7 @@ or search and load new Filters in the specified directory on runtime.
 
 ## Example
 
-1/ Create the filter service
+**1/ Create the filter service**
 ~~~~java 
 //Create a filter service
 FilterService filterService = new FilterService("./src/test/resources/others_filters");
@@ -35,7 +35,7 @@ FilterService filterService = new FilterService("./src/test/resources/others_fil
 filterService.initFilters();
 ~~~~
 
-2/ Create a filtered service
+**2/ Create a filtered service**
 ~~~~java 
 // Create proxy service 
 // 's' is the real service
@@ -44,7 +44,7 @@ IService sProxy = serviceProxyFactory.createProxy(s, false);
 ~~~~
  This create a Java Proxy, you can use other integration methods like: Spring AOP, CGLIB or WebServices Filters
 
-3/ (optional) Initialize JMX:
+**3/ (optional) Initialize JMX**
 ~~~~java 
 FilterServiceMBeansRegister register = new FilterServiceMBeansRegister(filterService);
 register.initMBean();
