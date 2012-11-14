@@ -29,30 +29,30 @@ or search and load new Filters in the specified directory on runtime.
 
 1/ Create the filter service
 ~~~~java 
-		//Create a filter service
-		FilterService filterService = new FilterService("./src/test/resources/others_filters");
-		//Load filters
-		filterService.initFilters();
+//Create a filter service
+FilterService filterService = new FilterService("./src/test/resources/others_filters");
+//Load filters
+filterService.initFilters();
 ~~~~
 
 2/ Create a filtered service
 ~~~~java 
-		// Create proxy service 
-		// 's' is the real service
-		ServiceProxyFactory serviceProxyFactory = new ServiceProxyFactory(filterService);
-		IService sProxy = serviceProxyFactory.createProxy(s, false);
+// Create proxy service 
+// 's' is the real service
+ServiceProxyFactory serviceProxyFactory = new ServiceProxyFactory(filterService);
+IService sProxy = serviceProxyFactory.createProxy(s, false);
 ~~~~
  This create a Java Proxy, you can use other integration methods like: Spring AOP, CGLIB or WebServices Filters
 
 3/ (optional) Initialize JMX:
 ~~~~java 
-		FilterServiceMBeansRegister register = new FilterServiceMBeansRegister(filterService);
-		register.initMBean();
+FilterServiceMBeansRegister register = new FilterServiceMBeansRegister(filterService);
+register.initMBean();
 ~~~~
 
 Do not forget at the application stop to unregister MBeans by following command:
 ~~~~java 
-		register.resetMBean();
+register.resetMBean();
 ~~~~
 
 After this you can call your service method
