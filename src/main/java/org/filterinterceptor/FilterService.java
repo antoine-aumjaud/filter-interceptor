@@ -46,7 +46,7 @@ public class FilterService extends Observable {
 	private final Set<Filter<?>> loadedFilters = new HashSet<Filter<?>>();
 
 	/**
-	 * Active filters in a map to fast access and in a list to manage activation
+	 * Active filters in a map to access to used Filter quickly
 	 */
 	private Map<String, Filter<?>> activeFilters;
 	/**
