@@ -136,6 +136,7 @@ And [here](https://github.com/antoine-aumjaud/filter-interceptor/blob/master/src
 What's coming
 -------------
 * Add solutions to integrate the Filters like *HessianFilter* or *CXFFilter*.
+* Add a cache to avoid research of Filter and creation of new Object (which contains filtered method) at each call.
 
 ---
 
