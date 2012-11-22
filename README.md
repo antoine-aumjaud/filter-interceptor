@@ -23,6 +23,10 @@ Only one Filter can run and override a service method, each Filter has a priorit
 Filters could be managed by API or by JMX beans. So it is possible to desactivate/reactivate a Filter, change its priority, 
 or search and load new Filters in the specified directory on runtime.
 
+The overtime introduced by this proxy has been optimized to be at least as possible.
+On my laptop (Intel 1.2GHz dual core), it add, for a Java proxy implementation :
+* 3.5us without cache 
+* 2us with cache activated 
 
 ---
 
@@ -144,18 +148,24 @@ Technology used
 ---------------
 
 ### Main API
-* **Java 6**                    : compiled with JDK 6, and run on a JRE 6
-* **SPI**                       : (Service Provider Interface) to search automatically Filters classes in classloader
+* **Java SE 6**                 : compiled with JDK 6, and run on a JRE 6
+ * **SPI**                      : (Service Provider Interface) to search automatically Filter classes in classpath (java.util.ServiceLoader)
+ * **Annotation**               : to tag method to filter
+ * **ClassLoader**              : to load new filters on runtime (java.lang.ClassLoader)
+ * **JMX**                      : to manage these filters with MBeans (javax.management.*)
+ * **Observable**               : to refresh MBeans if filters list has changed (java.util.Observable)
+ * **Lock**                     : to lock access to critical resources (java.util.concurrent.*)
 * **SLF 4J**                    : interface to log information, but let the choice to client application of the implementation used (like log4J, LOGBack, JCL, JUL...)
 
 ### Integration
 * **Java Proxy**                : for basic integration
-* **Spring AOP**                : for integration with Spring project
+* **Spring AOP**                : for integration with Spring projects
 
 ### Developper tools
 * **Maven 3**                   : to manage project build and releases
-* **Git**                       : for SCM
 * **Eclipse Indigo**            : to write sources and run tests
+* **JMetter**                   : to optimize time consuming
+* **Git**                       : for SCM
 * **Sonatype Maven repository** : to publish the project
 * **PGP**                       : to sign artifacts (classes JAR, javadoc JAR and sources JAR)
 
