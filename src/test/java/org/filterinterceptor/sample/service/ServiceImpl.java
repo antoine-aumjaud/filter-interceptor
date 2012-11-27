@@ -3,6 +3,11 @@ package org.filterinterceptor.sample.service;
 public class ServiceImpl implements IService {
 
 	@Override
+	public int test(int in) {
+		return in;
+	}
+
+	@Override
 	public int test0(int in) {
 		return in;
 	}

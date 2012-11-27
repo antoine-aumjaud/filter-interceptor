@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -20,15 +19,23 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import org.filterinterceptor.cache.CachedFilter;
+import org.filterinterceptor.cache.CachedFilterMap;
 import org.filterinterceptor.spi.Filter;
 import org.filterinterceptor.spi.FilteredMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Load JAR of a directory Load all services extends Filter class (user SPI)
- * Provide simple method to access to this filter
+ * This class is the entry point of this API
  * <p>
+ * The aim of this class is to:
+ * <ul>
+ * <li>Load JAR of a directory
+ * <li>Load all filters (user SPI)
+ * <li>Provide simple methods to access to these filters
+ * <li>Launch method invocation
+ * </ul>
  * You must call initFilter before first use.
  */
 public class FilterService extends Observable {
@@ -59,6 +66,22 @@ public class FilterService extends Observable {
 	 */
 	private final ReadWriteLock lockToFilterFastAccessCollections = new ReentrantReadWriteLock();
 
+	/*
+	 * CACHE
+	 */
+	/**
+	 * Indicate if cache of filtered services is active
+	 */
+	private boolean isCacheActive;
+
+	/**
+	 * Cache of filtered services
+	 */
+	private final Map<String, CachedFilter> cacheFilteredServices = new CachedFilterMap();
+
+	/*
+	 * CONSTRUCTORS
+	 */
 	/**
 	 * Public constructor
 	 * 
@@ -67,6 +90,60 @@ public class FilterService extends Observable {
 	 */
 	public FilterService(String jarFolder) {
 		this.jarFolder = jarFolder;
+	}
+
+	/**
+	 * Public constructor
+	 * 
+	 * @param jarFolder
+	 *            the folder of JAR containing Filters to load
+	 * @param isCacheActive
+	 *            a boolean indicate if a cache is used for filtered service
+	 */
+	public FilterService(String jarFolder, boolean isCacheActive) {
+		this.jarFolder = jarFolder;
+		this.isCacheActive = isCacheActive;
+	}
+
+	/*
+	 * PUBLIC
+	 */
+	/**
+	 * Indicate if cache of filtered service is active
+	 * 
+	 * @return true if cache is active
+	 */
+	public boolean isCacheActive() {
+		return isCacheActive;
+	}
+
+	/**
+	 * Activate or desactivate the filtered service cache
+	 * 
+	 * @param isCacheActive
+	 *            a boolean to set the activation status
+	 */
+	public void setCacheActive(boolean isCacheActive) {
+		this.isCacheActive = isCacheActive;
+		if (!isCacheActive)
+			clearCache();
+	}
+
+	/**
+	 * Clear the filtered service cache
+	 */
+
+	public void clearCache() {
+		cacheFilteredServices.clear();
+	}
+
+	/**
+	 * Get cache keys
+	 * 
+	 * @return a set of cache keys
+	 */
+	public Set<String> getCacheKeys() {
+		return cacheFilteredServices.keySet();
 	}
 
 	/**
@@ -82,7 +159,9 @@ public class FilterService extends Observable {
 		Lock lock = lockToFilterFastAccessCollections.readLock();
 		try {
 			lock.lock();
-			return activeFilters.get(getKey(serviceClass, methodName));
+			String key = getKey(serviceClass, methodName);
+			logger.trace("Access to key {}", key);
+			return activeFilters.get(key);
 		} finally {
 			lock.unlock();
 		}
@@ -138,6 +217,9 @@ public class FilterService extends Observable {
 			logger.error("Can't init filter: " + e.getMessage(), e);
 		}
 
+		// Clear cache
+		clearCache();
+
 		// Build fast access collections
 		buildFilterFastAccessCollections();
 
@@ -156,10 +238,13 @@ public class FilterService extends Observable {
 	 *            the active status to set
 	 */
 	public void setFilterActiveStatus(Filter<?> filter, boolean active) {
-		// set active state on filter
+		// Set active state on filter
 		filter.setActive(active);
 
-		// build fast access collections
+		// Clear cache
+		clearCache();
+
+		// Build fast access collections
 		buildFilterFastAccessCollections();
 	}
 
@@ -172,10 +257,13 @@ public class FilterService extends Observable {
 	 *            the priority to set
 	 */
 	public void setFilterPriority(Filter<?> filter, int priority) {
-		// set priority on filter
+		// Set priority on filter
 		filter.setPriority(priority);
 
-		// build fast access collections
+		// Clear cache
+		clearCache();
+
+		// Build fast access collections
 		buildFilterFastAccessCollections();
 	}
 
@@ -194,51 +282,89 @@ public class FilterService extends Observable {
 	 *            parameters to give to the method called
 	 * @return the returned object by Filter or the real service
 	 * @throws Throwable
-	 *             come from invoke method of {@link Proxy}
+	 *             if invoked method throw one
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Object invoke(Object service, boolean extendToInterfaces, Method method, Object... args) throws Throwable {
+		if (service == null)
+			throw new IllegalArgumentException("Service can't be null");
+
 		Object proxy = null;
-		Filter filter = null;
+		String filterDescription = null;
+
+		// Get proxy
 		try {
 			String methodName = method.getName();
-			Class<?> serviceClass = service.getClass();
-			logger.debug("Search filter on {}.{}", serviceClass.getSimpleName(), methodName);
+			String cacheKey =
+			// service.getClass().getName() + "." + methodName;
+			service.getClass().getName() + System.identityHashCode(service) + "." + methodName;
 
-			// Get the filters
-			filter = getActiveFilter(serviceClass, methodName);
-			// if no filter on service class and extended search to interface is
-			// activated
-			if (filter == null && extendToInterfaces) {
-				for (Class<?> i : serviceClass.getInterfaces()) {
-					filter = getActiveFilter(i, methodName);
-					if (filter != null)
-						break;
+			// Search in cache
+			if (isCacheActive) {
+				logger.debug("Search filter on {} in cache", cacheKey);
+				CachedFilter cache = cacheFilteredServices.get(cacheKey);
+				if (cache != null) {
+					logger.trace("Filter found in cache");
+					proxy = cache.getFilteredService();
+					filterDescription = "from cache: " + cache.getFilterDescription();
+				} else {
+					logger.trace("Filter NOT found in cache");
 				}
 			}
 
-			if (filter != null) {
-				// Get the new method proxy
-				proxy = filter.getFilterServiceImpl(service);
-			} else {
-				logger.trace("There is no filter on this service");
+			// Search a existing one
+			if (proxy == null) {
+				Class<?> serviceClass = service.getClass();
+				logger.debug("Search filter on {}.{}", serviceClass.getSimpleName(), methodName);
+
+				// Get the filters
+				Filter filter = getActiveFilter(serviceClass, methodName);
+				// if no filter on service class and extended search to
+				// interface is activated
+				if (filter == null && extendToInterfaces) {
+					for (Class<?> i : serviceClass.getInterfaces()) {
+						filter = getActiveFilter(i, methodName);
+						if (filter != null)
+							break;
+					}
+				}
+
+				if (filter != null) {
+					// Get the new method proxy
+					proxy = filter.getFilterServiceImpl(service);
+					filterDescription = "filter: " + filter.getDescription();
+
+					// Put proxy in cache if necessary
+					if (isCacheActive) {
+						logger.debug("Add filter in cache");
+						cacheFilteredServices.put(cacheKey, new CachedFilter(filter.getDescription(), proxy));
+					}
+				} else {
+					logger.trace("There is no filter on this service");
+					proxy = service;
+					filterDescription = "real service method";
+
+					// Put service in cache if necessary
+					if (isCacheActive) {
+						logger.debug("Add service in cache");
+						cacheFilteredServices.put(cacheKey, new CachedFilter(filterDescription, service));
+					}
+				}
 			}
 		} catch (RuntimeException e) {
 			logger.error("Exception while try to execute filter: " + e.getMessage(), e);
+			proxy = service;
+			filterDescription = "real service method (SEE ERROR IN LOG)";
 		}
 
+		// Call the final method
 		try {
-			if (proxy != null) {
-				// Call the method proxy
-				logger.info("Invoke Filter <{}>", filter.getDescription());
-				Object ret = method.invoke(proxy, args);
-				return ret;
-			} else {
-				logger.debug("Invoke real service method");
-				return method.invoke(service, args);
-			}
+			// Call the method proxy
+			logger.info("Invoke {}", filterDescription);
+			return method.invoke(proxy, args);
 		} catch (Throwable t) {
 			if (t.getCause() != null)
+				// Method invoke add a Exception level in the stack
 				throw t.getCause();
 			else
 				throw t;
@@ -322,8 +448,7 @@ public class FilterService extends Observable {
 	 * @return the key of the map used to store filter
 	 */
 	private static String getKey(Class<?> serviceClass, String methodName) {
-		String key = String.format("%s.%s", serviceClass.getName(), methodName);
-		logger.trace("Access to key {}", key);
+		String key = serviceClass.getName() + "." + methodName;
 		return key;
 	}
 
@@ -357,14 +482,14 @@ public class FilterService extends Observable {
 					for (Method method : filter.getFilterServiceImpl(null).getClass().getDeclaredMethods()) {
 						if (method.getAnnotation(FilteredMethod.class) != null) {
 							String methodName = method.getName();
-							String filterName = getKey(filter.getService(), methodName);
+							String filterKey = getKey(filter.getService(), methodName);
 							logger.debug("Filter <{}>: {}.{} is overrided", new String[] { filter.getDescription(),
 									filter.getService().getSimpleName(), methodName });
 
-							Filter<?> otherFilter = activeFilters.get(filterName);
+							Filter<?> otherFilter = activeFilters.get(filterKey);
 							if (otherFilter == null || otherFilter.getPriority() < filter.getPriority()) {
-								logger.trace("New Filter set for key {}", filterName);
-								activeFilters.put(filterName, filter);
+								logger.trace("New Filter set for key {}", filterKey);
+								activeFilters.put(filterKey, filter);
 							}
 						}
 					}

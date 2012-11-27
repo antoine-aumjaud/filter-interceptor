@@ -14,14 +14,14 @@ import javax.management.NotCompliantMBeanException;
 import javax.management.ObjectName;
 import javax.management.ReflectionException;
 
-import junit.framework.Assert;
-
 import org.filterinterceptor.FilterService;
 import org.filterinterceptor.management.mbean.FilterManagement;
 import org.filterinterceptor.management.mbean.FilterServiceManagement;
 import org.filterinterceptor.sample.spi.Test1Filter;
 import org.filterinterceptor.spi.Filter;
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 import static org.easymock.EasyMock.*;
 
@@ -95,6 +95,6 @@ public class FilterServiceMBeansRegisterTest {
 		// check
 		verify(fs);
 		FilterServiceMBeansRegister.MBEAN_DEFAULT_SERVER.getObjectInstance(objectName);
-		Assert.fail("Previous line must throw an exception, been FilterServiceManagement must have removed");
+		fail("Previous line must throw an exception, been FilterServiceManagement must have removed");
 	}
 }

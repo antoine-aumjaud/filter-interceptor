@@ -24,9 +24,34 @@ Filters could be managed by API or by JMX beans. So it is possible to desactivat
 or search and load new Filters in the specified directory on runtime.
 
 The overtime introduced by this proxy has been optimized to be at least as possible.
-On my laptop (Intel 1.2GHz dual core), it add, for a Java proxy implementation :
-* 3.5us without cache 
-* 2us with cache activated 
+On my laptop (Intel 1.2GHz dual core), for a Java proxy implementation, it add:
+* 2.6us without cache 
+* 2.3us with cache activated 
+The main interest of the cache is to avoid Filter object creation, which decrease the time passed in GC.
+
+Beware: 
+This results are without any logger implementation. If LOGBack is activated: 
+* with level set to *error*: the average of overtime is around 3.7us without cache and 3us with;
+* with level set to *debug*: the average of overtime is around 110us without cache 150us with (there is more logs with cache activated). 
+<!--
+No log implementation
+Overtime WITH    cache on   filtered method: 2387ns
+Overtime WITHOUT cache on   filtered method: 2696ns
+Overtime WITH    cache on UNfiltered method: 2306ns
+Overtime WITHOUT cache on UNfiltered method: 2678ns
+
+LOGBack err
+Overtime WITH    cache on   filtered method: 3033ns
+Overtime WITHOUT cache on   filtered method: 3740ns
+Overtime WITH    cache on UNfiltered method: 2690ns
+Overtime WITHOUT cache on UNfiltered method: 3696ns
+
+LOGBack debug
+Overtime WITH    cache on   filtered method: 160383ns
+Overtime WITHOUT cache on   filtered method:  92821ns
+Overtime WITH    cache on UNfiltered method: 134174ns
+Overtime WITHOUT cache on UNfiltered method:  94970ns
+-->
 
 ---
 
@@ -139,8 +164,10 @@ And [here](https://github.com/antoine-aumjaud/filter-interceptor/blob/master/src
 
 What's coming
 -------------
+* TODO add test on cache on service test and cache classes
+* TODO analyze with JProfiler
 * Add solutions to integrate the Filters like *HessianFilter* or *CXFFilter*.
-* Add a cache to avoid research of Filter and creation of new Object (which contains filtered method) at each call.
+
 
 ---
 
@@ -150,7 +177,7 @@ Technology used
 ### Main API
 * **Java SE 6**                 : compiled with JDK 6, and run on a JRE 6
  * **SPI**                      : (Service Provider Interface) to search automatically Filter classes in classpath (java.util.ServiceLoader)
- * **Annotation**               : to tag method to filter
+ * **Annotation**               : to tag method to filtered
  * **ClassLoader**              : to load new filters on runtime (java.lang.ClassLoader)
  * **JMX**                      : to manage these filters with MBeans (javax.management.*)
  * **Observable**               : to refresh MBeans if filters list has changed (java.util.Observable)
@@ -164,7 +191,7 @@ Technology used
 ### Developper tools
 * **Maven 3**                   : to manage project build and releases
 * **Eclipse Indigo**            : to write sources and run tests
-* **JMetter**                   : to optimize time consuming
+* **JProfiler**             : to optimize time consuming
 * **Git**                       : for SCM
 * **Sonatype Maven repository** : to publish the project
 * **PGP**                       : to sign artifacts (classes JAR, javadoc JAR and sources JAR)
@@ -172,7 +199,7 @@ Technology used
 ### Tests
 * **JUnit 4**                   : to create tests
 * **EasyMock 3**                : to create real unitary tests
-* **LogBack**                   : to log information (native implementation of SLF4J)
+* **LOGBack**                   : to log information (native SLF4J implementation)
 * **Spring IOC**                : to test Spring integration
 
 ---

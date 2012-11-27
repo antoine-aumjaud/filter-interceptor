@@ -49,8 +49,18 @@ public final class MainFilterTest {
 		while (command != 'q') {
 			List<Filter<?>> filters = filterService.getAllFilters();
 			Map<String, Filter<?>> filtersMap = filterService.getAllActiveFiltersUsed();
-			System.out
-					.printf("====Menu===%nr: reinit%nl: filter list%na: activate%nd: desactivate%np: change prority%nu: used filters%nt: test%nq: quit%n>");
+			System.out.printf("%n====Menu===%n" //
+					+ "r: reinit%n" //
+					+ "l: filter list%n" //
+					+ "a: activate%n" //
+					+ "d: desactivate%n" //
+					+ "p: change prority%n"//
+					+ "u: used filters%n" //
+					+ "x: toggle cache%n" //
+					+ "t: test%n" //
+					+ "s: performance test%n" //
+					+ "q: quit%n%n" //
+					+ "Cache Status: %b%n%n > ", filterService.isCacheActive());
 			try {
 				String commandLine = b.readLine();
 				if (commandLine.length() > 0) {
@@ -93,21 +103,22 @@ public final class MainFilterTest {
 							System.out.printf("%s -> %s%n", mapEntry.getKey(), mapEntry.getValue().getDescription());
 						}
 						break;
-					case 't':
+					case 't': {
 						System.out.println("Start Test with Proxy");
-						long startTestProxy = System.nanoTime();
 						launchTest(sProxy);
-						long stopTestProxy = System.nanoTime();
 						System.out.println();
 						System.out.println("Start Test without Proxy");
-						long startTest = System.nanoTime();
 						launchTest(s);
-						long stopTest = System.nanoTime();
-						double testProxy = stopTestProxy - startTestProxy;
-						double testDirect = stopTest - startTest;
-						System.out.printf("Exceution of PROXY test: %fms%n", testProxy / 1000000);
-						System.out.printf("Exceution of REAL  test: %fms%n", testDirect / 1000000);
-						System.out.printf("Overtime: %fms%n", (testProxy - testDirect) / 1000000);
+						break;
+					}
+					case 's': {
+						boolean isCacheActive = filterService.isCacheActive();
+						launchTestPerf(filterService, s, sProxy);
+						filterService.setCacheActive(isCacheActive);
+						break;
+					}
+					case 'x':
+						filterService.setCacheActive(!filterService.isCacheActive());
 						break;
 					default:
 						System.err.println("Please, enter a valid command");
@@ -177,6 +188,12 @@ public final class MainFilterTest {
 		s1 = s.test1(s1);
 		System.out.printf("after: %s%n", s1);
 
+		System.out.println("S1 - cache?");
+		s1 = new DtoSample1(1, 2.2, "S1", Arrays.asList("AA", "BB", "CC"));
+		System.out.printf("before: %s%n", s1);
+		s1 = s.test1(s1);
+		System.out.printf("after: %s%n", s1);
+
 		System.out.println();
 		System.out.println("S2");
 		DtoSample2 s2 = new DtoSample2(1, 2.3, "S2", s1);
@@ -197,5 +214,85 @@ public final class MainFilterTest {
 		System.out.printf("before: %d%n", s1.getA() + in);
 		int res = s.test4(s1, in);
 		System.out.printf("after: %d%n", res);
+
+		System.out.println("S4 - cache?");
+		System.out.printf("before: %d%n", s1.getA() + in);
+		res = s.test4(s1, in);
+		System.out.printf("after: %d%n", res);
+	}
+
+	/**
+	 * Launch tests for perfs
+	 */
+	private static void launchTestPerf(FilterService filterService, IService s, IService sProxy) {
+
+		final int nb = 50000;
+		long testProxy = 0;
+		long testDirect = 0;
+
+		StringBuilder str = new StringBuilder();
+
+		filterService.setCacheActive(true);
+		for (int i = 0; i < nb; i++) {
+			long startTestProxy = System.nanoTime();
+			sProxy.test(1);
+			long stopTestProxy = System.nanoTime();
+			long startTest = System.nanoTime();
+			s.test(1);
+			long stopTest = System.nanoTime();
+			testProxy += stopTestProxy - startTestProxy;
+			testDirect += stopTest - startTest;
+		}
+		str.append(String.format("Overtime WITH    cache on   filtered method: %dns%n", (testProxy - testDirect) / nb));
+
+		testProxy = 0;
+		testDirect = 0;
+
+		filterService.setCacheActive(false);
+		for (int i = 0; i < nb; i++) {
+			long startTestProxy = System.nanoTime();
+			sProxy.test0(1);
+			long stopTestProxy = System.nanoTime();
+			long startTest = System.nanoTime();
+			s.test0(1);
+			long stopTest = System.nanoTime();
+			testProxy += stopTestProxy - startTestProxy;
+			testDirect += stopTest - startTest;
+		}
+		str.append(String.format("Overtime WITHOUT cache on   filtered method: %dns%n", (testProxy - testDirect) / nb));
+
+		testProxy = 0;
+		testDirect = 0;
+
+		filterService.setCacheActive(true);
+		for (int i = 0; i < nb; i++) {
+			long startTestProxy = System.nanoTime();
+			sProxy.test0(1);
+			long stopTestProxy = System.nanoTime();
+			long startTest = System.nanoTime();
+			s.test0(1);
+			long stopTest = System.nanoTime();
+			testProxy += stopTestProxy - startTestProxy;
+			testDirect += stopTest - startTest;
+		}
+		str.append(String.format("Overtime WITH    cache on UNfiltered method: %dns%n", (testProxy - testDirect) / nb));
+
+		testProxy = 0;
+		testDirect = 0;
+
+		filterService.setCacheActive(false);
+		for (int i = 0; i < nb; i++) {
+			long startTestProxy = System.nanoTime();
+			sProxy.test0(1);
+			long stopTestProxy = System.nanoTime();
+			long startTest = System.nanoTime();
+			s.test0(1);
+			long stopTest = System.nanoTime();
+			testProxy += stopTestProxy - startTestProxy;
+			testDirect += stopTest - startTest;
+		}
+		str.append(String.format("Overtime WITHOUT cache on UNfiltered method: %dns%n", (testProxy - testDirect) / nb));
+
+		System.out.println(str.toString());
 	}
 }

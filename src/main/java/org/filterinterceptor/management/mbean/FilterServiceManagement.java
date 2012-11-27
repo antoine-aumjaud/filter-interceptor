@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.filterinterceptor.FilterService;
 import org.filterinterceptor.spi.Filter;
@@ -41,6 +42,26 @@ public class FilterServiceManagement implements FilterServiceManagementMBean {
 	@Override
 	public void reinitFilters() throws IOException {
 		filterService.initFilters();
+	}
+
+	@Override
+	public boolean isFilteredMethodCacheActive() {
+		return filterService.isCacheActive();
+	}
+
+	@Override
+	public void setFilteredMethodCacheActive(boolean isActive) {
+		filterService.setCacheActive(isActive);
+	}
+
+	@Override
+	public void clearFilteredMethodCache() {
+		filterService.clearCache();
+	}
+
+	@Override
+	public Set<String> getFilteredMethodCacheKeys() {
+		return filterService.getCacheKeys();
 	}
 
 	/*

@@ -8,10 +8,10 @@ import org.filterinterceptor.sample.service.ServiceImpl;
 import org.filterinterceptor.spi.Filter;
 import org.filterinterceptor.spi.FilteredMethod;
 
-public class Test1Filter extends Filter<IService> {
+public class TestFilter extends Filter<IService> {
 
-	public Test1Filter() {
-		super("Service ServiceImpl Test 1", 1);
+	public TestFilter() {
+		super("Service ServiceImpl Test", 1);
 	}
 
 	@Override
@@ -33,14 +33,18 @@ public class Test1Filter extends Filter<IService> {
 
 		@FilteredMethod
 		@Override
-		public DtoSample1 test1(DtoSample1 in) {
-			in.setA(1000000);
-			return service.test1(in);
+		public int test(int in) {
+			return service.test(in);
 		}
 
 		@Override
 		public int test0(int in) {
 			return 0;
+		}
+
+		@Override
+		public DtoSample1 test1(DtoSample1 in) {
+			return null;
 		}
 
 		@Override
@@ -58,9 +62,5 @@ public class Test1Filter extends Filter<IService> {
 			return 0;
 		}
 
-		@Override
-		public int test(int in) {
-			return 0;
-		}
 	}
 }

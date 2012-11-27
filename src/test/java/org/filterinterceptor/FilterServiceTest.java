@@ -2,7 +2,6 @@ package org.filterinterceptor;
 
 import java.io.IOException;
 
-import org.filterinterceptor.FilterService;
 import org.filterinterceptor.sample.service.DtoSample1;
 import org.filterinterceptor.sample.service.DtoSample2;
 import org.filterinterceptor.sample.service.DtoSample3;
@@ -11,7 +10,6 @@ import org.filterinterceptor.sample.service.ServiceImpl;
 import org.filterinterceptor.spi.Filter;
 import org.filterinterceptor.spi.FilteredMethod;
 import org.junit.Test;
-
 
 import static org.junit.Assert.*;
 
@@ -22,7 +20,7 @@ public class FilterServiceTest {
 	public void initFilter_wrongFolder_throwIOException() throws IOException {
 
 		// test
-		FilterService fs = new FilterService("./src/test/resources/ARG");
+		FilterService fs = new FilterService("./src/test/resources/FAKE");
 		fs.initFilters();
 
 		// check
@@ -38,9 +36,9 @@ public class FilterServiceTest {
 
 		// check
 		// Check load all filters
-		assertEquals("Nb of filters found must be equals to 4", 4, fs.getAllFilters().size());
+		assertEquals("Nb of filters found must be equals to 5", 5, fs.getAllFilters().size());
 		// Check active filter override
-		assertEquals("Nb of active filter must be equals to 3", 3, fs.getAllActiveFiltersUsed().size());
+		assertEquals("Nb of active filter must be equals to 4", 4, fs.getAllActiveFiltersUsed().size());
 		Filter<?> filter = fs.getActiveFilter(ServiceImpl.class, "test1");
 		// Check multiple filters on the same service method (only the higher
 		// priority is active)
@@ -57,10 +55,12 @@ public class FilterServiceTest {
 		fs.initFilters();
 
 		// check
-		assertEquals("Same filters must be load only one time", 4, fs.getAllFilters().size());
+		assertEquals("Same filters must be load only one time", 5, fs.getAllFilters().size());
 	}
 
 	@Test
+	// if exception occurred while retrieving the filter, the real service is
+	// called
 	public void invoke_exception_callRealService() throws Throwable {
 
 		IService service = createMock(IService.class);
@@ -106,7 +106,7 @@ public class FilterServiceTest {
 		FilterService fs = new FilterService(null) {
 			@Override
 			public Filter<?> getActiveFilter(Class<?> serviceClass, String methodName) {
-				return null;
+				return null; // to avoid NPE if initFilter method is not called
 			}
 		};
 		Object ret = fs.invoke(service, false, IService.class.getDeclaredMethod("test0", int.class),
@@ -178,6 +178,11 @@ public class FilterServiceTest {
 				@Override
 				public DtoSample1 test1(DtoSample1 in) {
 					return null;
+				}
+
+				@Override
+				public int test(int in) {
+					return 0;
 				}
 
 				@Override
@@ -253,6 +258,11 @@ public class FilterServiceTest {
 				}
 
 				@Override
+				public int test(int in) {
+					return 0;
+				}
+
+				@Override
 				@FilteredMethod
 				public int test0(int in) {
 					return service.test0(in + 1);
@@ -321,7 +331,7 @@ public class FilterServiceTest {
 		@Override
 		public Filter<?> getActiveFilter(java.lang.Class<?> serviceClass, String methodName) {
 			count++;
-			System.out.println(serviceClass);
+			// System.out.println(serviceClass);
 			if (serviceClass == IService.class)
 				return new ServiceFilterChangeTreatment();
 			else
@@ -382,4 +392,62 @@ public class FilterServiceTest {
 		assertNotNull("Filter must not be null", filter3);
 		assertTrue("New higter priority filter must not be equals to first filter", filter3 == filter1);
 	}
+
+	@Test
+	public void invoke_realServiceTwice_useCache() throws Throwable {
+
+		IService service = createMock(IService.class);
+		IService service2 = createMock(IService.class);
+
+		// expect
+		int paramValue = 10;
+		int retValue = 11;
+		expect(service.test0(paramValue)).andReturn(retValue).times(4);
+		expect(service2.test0(paramValue)).andReturn(retValue).times(1);
+
+		// replay
+		replay(service, service2);
+
+		FilterService fs = new FilterService(null) {
+			@Override
+			public Filter<?> getActiveFilter(Class<?> serviceClass, String methodName) {
+				return null; // to avoid NPE if initFilter method is not called
+			}
+		};
+
+		// check default value
+		assertFalse("Cache must be desactivate by default", fs.isCacheActive());
+
+		// test without cache
+		fs.setCacheActive(false);
+
+		fs.invoke(service, false, IService.class.getDeclaredMethod("test0", int.class), new Object[] { paramValue });
+		assertEquals("Cache must be empty when cache is desactivated", fs.getCacheKeys().size(), 0);
+
+		fs.invoke(service, false, IService.class.getDeclaredMethod("test0", int.class), new Object[] { paramValue });
+		assertEquals("Cache must be empty when cache is desactivated", fs.getCacheKeys().size(), 0);
+
+		// test with cache
+		fs.setCacheActive(true);
+
+		fs.invoke(service, false, IService.class.getDeclaredMethod("test0", int.class), new Object[] { paramValue });
+		assertEquals("Cache must have one entry when service is call", fs.getCacheKeys().size(), 1);
+
+		fs.invoke(service, false, IService.class.getDeclaredMethod("test0", int.class), new Object[] { paramValue });
+		assertEquals("Cache must have only one entry for the same service on the same method",
+				fs.getCacheKeys().size(), 1);
+
+		// another service with cache
+		fs.invoke(service2, false, IService.class.getDeclaredMethod("test0", int.class), new Object[] { paramValue });
+		assertEquals("Cache must have a new entry for 2 services on the same method", fs.getCacheKeys().size(), 2);
+
+		// another method with cache
+		fs.invoke(service2, false, IService.class.getDeclaredMethod("test", int.class), new Object[] { paramValue });
+		assertEquals("Cache must have a new entry for an another method on the same service", fs.getCacheKeys().size(),
+				3);
+
+		// check
+		verify(service, service2);
+	}
+
 }
