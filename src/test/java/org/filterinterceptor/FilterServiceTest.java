@@ -404,6 +404,7 @@ public class FilterServiceTest {
 		int retValue = 11;
 		expect(service.test0(paramValue)).andReturn(retValue).times(4);
 		expect(service2.test0(paramValue)).andReturn(retValue).times(1);
+		expect(service2.test(paramValue)).andReturn(retValue).times(1);
 
 		// replay
 		replay(service, service2);
