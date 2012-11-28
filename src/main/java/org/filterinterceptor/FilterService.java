@@ -295,9 +295,7 @@ public class FilterService extends Observable {
 		// Get proxy
 		try {
 			String methodName = method.getName();
-			String cacheKey =
-			// service.getClass().getName() + "." + methodName;
-			service.getClass().getName() + System.identityHashCode(service) + "." + methodName;
+			String cacheKey = service.getClass().getName() + System.identityHashCode(service) + "." + methodName;
 
 			// Search in cache
 			if (isCacheActive) {
