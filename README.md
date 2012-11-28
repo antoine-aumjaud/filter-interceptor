@@ -164,7 +164,6 @@ And [here](https://github.com/antoine-aumjaud/filter-interceptor/blob/master/src
 
 What's coming
 -------------
-* TODO add test on cache on service test and cache classes
 * TODO analyze with JProfiler
 * Add solutions to integrate the Filters like *HessianFilter* or *CXFFilter*.
 
