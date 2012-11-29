@@ -21,7 +21,7 @@
 	
 	<scm>
 		<connection>scm:git:git://github.com/antoine-aumjaud/filter-interceptor.git</connection>
-		<developerConnection>scm:git:[fetch=]git://github.com/antoine-aumjaud/filter-interceptor.git[push=]https://github.com/antoine-aumjaud/filter-interceptor.git</developerConnection>
+		<developerConnection>scm:git:[push=]git://github.com/antoine-aumjaud/filter-interceptor.git[fetch=]https://github.com/antoine-aumjaud/filter-interceptor.git</developerConnection>
 		<url>http://github.com/antoine-aumjaud/filter-interceptor</url>
 	  <tag>v1.15</tag>
   </scm>
