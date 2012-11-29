@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.filter-interceptor</groupId>
 	<artifactId>filter-interceptor</artifactId>
-	<version>1.15-SNAPSHOT</version>
+	<version>1.20</version>
 	<packaging>jar</packaging>
 
 	<name>Filter Interceptor</name>
@@ -23,6 +23,7 @@
 		<connection>scm:git:git://github.com/antoine-aumjaud/filter-interceptor.git</connection>
 		<developerConnection>scm:git:[push=]ssh://github.com/antoine-aumjaud/filter-interceptor.git[fetch=]https://github.com/antoine-aumjaud/filter-interceptor.git</developerConnection>
 		<url>http://github.com/antoine-aumjaud/filter-interceptor</url>
+    <tag>v1.20</tag>
   </scm>
 
 	<dependencies>
