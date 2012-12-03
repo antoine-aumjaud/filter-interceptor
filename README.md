@@ -223,3 +223,11 @@ Links
 * **Article on soat.fr** (French)  : http://blog.soat.fr/2010/06/la-mort-de-log4j/
  
  
+---
+
+Change log
+-----
+
+1.2 Improve performance - add cache
+1.1 Remote management - JMX
+1.0 First stable version
