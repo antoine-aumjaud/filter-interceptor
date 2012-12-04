@@ -172,7 +172,6 @@
 		</pluginManagement>
 
 		<plugins>
-
 			<!-- check maven project rules -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -216,6 +215,28 @@
 			</activation>
 			<build>
 				<plugins>
+					<plugin>
+						<!-- check needed GPG passphrase -->
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-enforcer-plugin</artifactId>
+						<configuration>
+							<rules>
+								<requireProperty>
+									<property>gpg.passphrase</property>
+									<message>You must set a gpg passphrase (gpg.passphrase property)</message>
+								</requireProperty>
+							</rules>
+						</configuration>
+						<executions>
+							<execution>
+								<id>enforce-rules</id>
+								<goals>
+									<goal>enforce</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+			
 					<!-- add javadoc at package step -->
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
