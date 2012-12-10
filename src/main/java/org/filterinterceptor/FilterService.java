@@ -65,6 +65,8 @@ public class FilterService extends Observable {
 	 * Object use to lock access to collections for fast access
 	 */
 	private final ReadWriteLock lockToFilterFastAccessCollections = new ReentrantReadWriteLock();
+	private final Lock readLockToFilterFastAccessCollections = lockToFilterFastAccessCollections.readLock();
+	private final Lock writeLockToFilterFastAccessCollections = lockToFilterFastAccessCollections.writeLock();
 
 	/*
 	 * CACHE
@@ -77,7 +79,7 @@ public class FilterService extends Observable {
 	/**
 	 * Cache of filtered services
 	 */
-	private final Map<String, CachedFilter> cacheFilteredServices = new CachedFilterMap();
+	private final CachedFilterMap cacheFilteredServices = new CachedFilterMap();
 
 	/*
 	 * CONSTRUCTORS
@@ -156,14 +158,13 @@ public class FilterService extends Observable {
 	 * @return the active filter with the highest priority
 	 */
 	public Filter<?> getActiveFilter(Class<?> serviceClass, String methodName) {
-		Lock lock = lockToFilterFastAccessCollections.readLock();
+		readLockToFilterFastAccessCollections.lock();
 		try {
-			lock.lock();
-			String key = getKey(serviceClass, methodName);
+			String key = getKey(serviceClass.getName(), methodName);
 			logger.trace("Access to key {}", key);
 			return activeFilters.get(key);
 		} finally {
-			lock.unlock();
+			readLockToFilterFastAccessCollections.unlock();
 		}
 	}
 
@@ -173,12 +174,11 @@ public class FilterService extends Observable {
 	 * @return the Map of filters
 	 */
 	public Map<String, Filter<?>> getAllActiveFiltersUsed() {
-		Lock lock = lockToFilterFastAccessCollections.readLock();
+		readLockToFilterFastAccessCollections.lock();
 		try {
-			lock.lock();
 			return activeFilters;
 		} finally {
-			lock.unlock();
+			readLockToFilterFastAccessCollections.unlock();
 		}
 	}
 
@@ -188,12 +188,11 @@ public class FilterService extends Observable {
 	 * @return the list of filters
 	 */
 	public List<Filter<?>> getAllFilters() {
-		Lock lock = lockToFilterFastAccessCollections.readLock();
+		readLockToFilterFastAccessCollections.lock();
 		try {
-			lock.lock();
 			return allFilters;
 		} finally {
-			lock.unlock();
+			readLockToFilterFastAccessCollections.unlock();
 		}
 	}
 
@@ -445,9 +444,8 @@ public class FilterService extends Observable {
 	 *            the method name
 	 * @return the key of the map used to store filter
 	 */
-	private static String getKey(Class<?> serviceClass, String methodName) {
-		String key = serviceClass.getName() + "." + methodName;
-		return key;
+	private static String getKey(String serviceClassName, String methodName) {
+		return serviceClassName + methodName;
 	}
 
 	/**
@@ -457,10 +455,8 @@ public class FilterService extends Observable {
 	// TODOJ7: to remove
 	private void buildFilterFastAccessCollections() {
 
-		Lock lock = lockToFilterFastAccessCollections.writeLock();
+		writeLockToFilterFastAccessCollections.lock();
 		try {
-			lock.lock();
-
 			// LIST
 			allFilters = new ArrayList<Filter<?>>(loadedFilters);
 			// Sort Filters
@@ -480,7 +476,7 @@ public class FilterService extends Observable {
 					for (Method method : filter.getFilterServiceImpl(null).getClass().getDeclaredMethods()) {
 						if (method.getAnnotation(FilteredMethod.class) != null) {
 							String methodName = method.getName();
-							String filterKey = getKey(filter.getService(), methodName);
+							String filterKey = getKey(filter.getService().getName(), methodName);
 							logger.debug("Filter <{}>: {}.{} is overrided", new String[] { filter.getDescription(),
 									filter.getService().getSimpleName(), methodName });
 
@@ -499,7 +495,7 @@ public class FilterService extends Observable {
 			// Create a RO map
 			activeFilters = Collections.unmodifiableMap(activeFilters);
 		} finally {
-			lock.unlock();
+			writeLockToFilterFastAccessCollections.unlock();
 		}
 	}
 }
