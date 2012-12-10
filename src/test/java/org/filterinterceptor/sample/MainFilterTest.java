@@ -243,7 +243,7 @@ public final class MainFilterTest {
 			testProxy += stopTestProxy - startTestProxy;
 			testDirect += stopTest - startTest;
 		}
-		str.append(String.format("Overtime WITH    cache on   filtered method: %dns%n", (testProxy - testDirect) / nb));
+		str.append(String.format("Overhead WITH    cache on   filtered method: %dns%n", (testProxy - testDirect) / nb));
 
 		testProxy = 0;
 		testDirect = 0;
@@ -251,15 +251,15 @@ public final class MainFilterTest {
 		filterService.setCacheActive(false);
 		for (int i = 0; i < nb; i++) {
 			long startTestProxy = System.nanoTime();
-			sProxy.test0(1);
+			sProxy.test(1);
 			long stopTestProxy = System.nanoTime();
 			long startTest = System.nanoTime();
-			s.test0(1);
+			s.test(1);
 			long stopTest = System.nanoTime();
 			testProxy += stopTestProxy - startTestProxy;
 			testDirect += stopTest - startTest;
 		}
-		str.append(String.format("Overtime WITHOUT cache on   filtered method: %dns%n", (testProxy - testDirect) / nb));
+		str.append(String.format("Overhead WITHOUT cache on   filtered method: %dns%n", (testProxy - testDirect) / nb));
 
 		testProxy = 0;
 		testDirect = 0;
