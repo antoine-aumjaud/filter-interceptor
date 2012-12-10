@@ -1,6 +1,7 @@
 package org.filterinterceptor.cache;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -9,74 +10,72 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 /**
  * Create a child of HashMap to manage lock
  */
-@SuppressWarnings("serial")
-public class CachedFilterMap extends HashMap<String, CachedFilter> {
+public class CachedFilterMap {
 	/**
 	 * Object use to lock access to cache
 	 */
 	private final ReadWriteLock rwLock = new ReentrantReadWriteLock();
+	private final Lock wLock = rwLock.writeLock();
+	private final Lock rLock = rwLock.readLock();
+
+	/**
+	 * The map there data are cached
+	 */
+	private final Map<String, CachedFilter> data = new HashMap<String, CachedFilter>();
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see java.util.HashMap#clear()
+	 * @see java.util.Map#clear()
 	 */
-	@Override
 	public void clear() {
-		Lock lock = rwLock.writeLock();
+		wLock.lock();
 		try {
-			lock.lock();
-			super.clear();
+			data.clear();
 		} finally {
-			lock.unlock();
+			wLock.unlock();
 		}
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see java.util.HashMap#keySet()
+	 * @see java.util.Map#keySet()
 	 */
-	@Override
 	public Set<String> keySet() {
-		Lock lock = rwLock.readLock();
+		rLock.lock();
 		try {
-			lock.lock();
-			return super.keySet();
+			return data.keySet();
 		} finally {
-			lock.unlock();
+			rLock.unlock();
 		}
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see java.util.HashMap#get(java.lang.Object)
+	 * @see java.util.Map#get(java.lang.Object)
 	 */
-	@Override
 	public CachedFilter get(Object key) {
-		Lock lock = rwLock.readLock();
+		rLock.lock();
 		try {
-			lock.lock();
-			return super.get(key);
+			return data.get(key);
 		} finally {
-			lock.unlock();
+			rLock.unlock();
 		}
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see java.util.HashMap#put(java.lang.Object, java.lang.Object)
+	 * @see java.util.Map#put(java.lang.Object, java.lang.Object)
 	 */
-	@Override
 	public CachedFilter put(String key, CachedFilter value) {
-		Lock lock = rwLock.writeLock();
+		wLock.lock();
 		try {
-			lock.lock();
-			return super.put(key, value);
+			return data.put(key, value);
 		} finally {
-			lock.unlock();
+			wLock.unlock();
 		}
 	}
 }
