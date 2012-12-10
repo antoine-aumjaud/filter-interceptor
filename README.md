@@ -225,9 +225,17 @@ Links
  
 ---
 
+Known issues
+------------
+* This API doesn't work for methods which are overloaded (same method name with differents parameters)
+
+---
+
 Change log
------
+----------
 
 *1.20 Improve performance - add cache
 *1.1 Remote management - JMX
 *1.0 First stable version
+
+
