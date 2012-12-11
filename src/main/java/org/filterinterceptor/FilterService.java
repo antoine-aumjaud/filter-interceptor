@@ -294,10 +294,10 @@ public class FilterService extends Observable {
 		// Get proxy
 		try {
 			String methodName = method.getName();
-			String cacheKey = service.getClass().getName() + System.identityHashCode(service) + "." + methodName;
-
+			String cacheKey = null;
 			// Search in cache
 			if (isCacheActive) {
+				cacheKey = service.getClass().getName() + System.identityHashCode(service) + "." + methodName;
 				logger.debug("Search filter on {} in cache", cacheKey);
 				CachedFilter cache = cacheFilteredServices.get(cacheKey);
 				if (cache != null) {
@@ -445,7 +445,7 @@ public class FilterService extends Observable {
 	 * @return the key of the map used to store filter
 	 */
 	private static String getKey(String serviceClassName, String methodName) {
-		return serviceClassName + methodName;
+		return serviceClassName + "." + methodName;
 	}
 
 	/**

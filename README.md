@@ -25,32 +25,32 @@ or search and load new Filters in the specified directory on runtime.
 
 The overhead introduced by this proxy has been optimized to be at least as possible.
 On my laptop (Intel 1.2GHz dual core), for a Java proxy implementation, it add:
-* 3.5us without cache 
-* 2.5us with cache activated 
+* 2.9us without cache 
+* 2.4us with cache activated 
 The main interest of the cache is to avoid Filter objects creation, which decrease the time passed in GC.
 
 Beware: 
 This results are without any logger implementation. If LOGBack is activated: 
-* with level set to *error*: the average of overhead is around 3.7us without cache and 2.9us with;
-* with level set to *debug*: the average of overhead is around 140us without cache 160us with (there is more logs with cache activated). 
+* with level set to *error*: the average of overhead is around 3us without cache and 2.5us with;
+* with level set to *debug*: the average of overhead is around 150us without cache 190us with (there is more logs when cache is activated). 
 <!--
 No log implementation
-Overhead WITH    cache on   filtered method: 2467ns
-Overhead WITHOUT cache on   filtered method: 3645ns
-Overhead WITH    cache on UNfiltered method: 2470ns
-Overhead WITHOUT cache on UNfiltered method: 2884ns
+Overhead WITH    cache on   filtered method: 2469ns
+Overhead WITHOUT cache on   filtered method: 2953ns
+Overtime WITH    cache on UNfiltered method: 2421ns
+Overtime WITHOUT cache on UNfiltered method: 2064ns
 
 LOGBack err
-Overhead WITH    cache on   filtered method: 2629ns
-Overhead WITHOUT cache on   filtered method: 3751ns
-Overhead WITH    cache on UNfiltered method: 2909ns
-Overhead WITHOUT cache on UNfiltered method: 3474ns
+Overhead WITH    cache on   filtered method: 2544ns
+Overhead WITHOUT cache on   filtered method: 2988ns
+Overtime WITH    cache on UNfiltered method: 2454ns
+Overtime WITHOUT cache on UNfiltered method: 2138ns
 
 LOGBack debug
-Overhead WITH    cache on   filtered method: 160390ns
-Overhead WITHOUT cache on   filtered method: 138083ns
-Overhead WITH    cache on UNfiltered method: 157537ns
-Overhead WITHOUT cache on UNfiltered method: 126924ns
+Overhead WITH    cache on   filtered method: 198840ns
+Overhead WITHOUT cache on   filtered method: 158948ns
+Overtime WITH    cache on UNfiltered method: 195803ns
+Overtime WITHOUT cache on UNfiltered method: 139652ns
 -->
 
 ---
