@@ -234,8 +234,9 @@ Known issues
 Change log
 ----------
 
-*1.20 Improve performance - add cache
-*1.1 Remote management - JMX
-*1.0 First stable version
+* 1.21 Improve performance with JProfiler
+* 1.20 Improve performance - add cache
+* 1.1 Remote management - JMX
+* 1.0 First stable version
 
 
