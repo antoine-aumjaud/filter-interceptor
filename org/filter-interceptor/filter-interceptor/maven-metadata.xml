@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.filter-interceptor</groupId>
+  <artifactId>filter-interceptor</artifactId>
+  <versioning>
+    <versions>
+      <version>1.22-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20130817215138</lastUpdated>
+  </versioning>
+</metadata>
