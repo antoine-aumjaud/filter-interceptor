@@ -23,8 +23,8 @@
 		<connection>scm:git:http://github.com/antoine-aumjaud/filter-interceptor.git</connection>
 		<developerConnection>scm:git:https://github.com/antoine-aumjaud/filter-interceptor.git</developerConnection>
 		<url>http://github.com/antoine-aumjaud/filter-interceptor</url>
-    <tag>HEAD</tag>
-  </scm>
+		<tag>HEAD</tag>
+	</scm>
 
 	<dependencies>
 		<!-- logs -->
@@ -108,6 +108,10 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+	<!-- GitHub deploy -->
+		<!-- github server corresponds to entry in ~/.m2/settings.xml -->
+		<github.global.server>github</github.global.server>
 	</properties>
 
 
@@ -200,6 +204,41 @@
 					</execution>
 				</executions>
 			</plugin>
+	
+	<!-- GitHub deploy -->
+			<plugin>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.7</version>
+				<configuration>
+					<altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>
+				</configuration>
+			</plugin>
+
+	<!-- GitHub deploy -->
+			<plugin>
+				<groupId>com.github.github</groupId>
+				<artifactId>site-maven-plugin</artifactId>
+				<version>0.8</version>
+				<configuration>
+					<message>Maven artifacts for ${project.version}</message>	<!-- git commit message -->
+					<noJekyll>true</noJekyll>																	<!-- disable webpage processing -->
+					<outputDirectory>${project.build.directory}/mvn-repo</outputDirectory> <!-- matches distribution management repository url above -->
+					<branch>refs/heads/mvn-repo</branch>											 <!-- remote branch name -->
+					<includes><include>**/*</include></includes>
+					<repositoryName>filter-interceptor</repositoryName>			<!-- github repo name -->
+					<repositoryOwner>antoine-aumjaud</repositoryOwner>		<!-- github username	-->
+					<merge>true</merge> <!-- Can't upload existing version -->
+				</configuration>
+				<executions>
+					<!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
+					<execution>
+						<goals>
+							<goal>site</goal>
+						</goals>
+						<phase>deploy</phase>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -270,4 +309,14 @@
 			</build>
 		</profile>
 	</profiles>
+	
+	
+	<!-- GitHub deploy -->
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>GitHub ${project.artifactId} Repository</name>
+      <url>https://raw.github.com/antoine-aumjaud/${project.artifactId}/mvn-repo</url>
+    </repository>
+  </distributionManagement>
 </project>
