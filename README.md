@@ -239,6 +239,7 @@ Change log
 * 1.1 Remote management - JMX
 * 1.0 First stable version
 
+---
 
 Download
 ----------
