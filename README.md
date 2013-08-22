@@ -164,7 +164,6 @@ And [here](https://github.com/antoine-aumjaud/filter-interceptor/blob/master/src
 
 What's coming
 -------------
-* TODO analyze with JProfiler
 * Add solutions to integrate the Filters like *HessianFilter* or *CXFFilter*.
 
 
@@ -190,7 +189,7 @@ Technology used
 ### Developper tools
 * **Maven 3**                   : to manage project build and releases
 * **Eclipse Indigo**            : to write sources and run tests
-* **JProfiler**             : to optimize time consuming
+* **JProfiler**                 : to optimize time consuming
 * **Git**                       : for SCM
 * **Sonatype Maven repository** : to publish the project
 * **PGP**                       : to sign artifacts (classes JAR, javadoc JAR and sources JAR)
@@ -234,9 +233,32 @@ Known issues
 Change log
 ----------
 
+* 1.22 Publish binaries on mvn-repo branch
 * 1.21 Improve performance with JProfiler
 * 1.20 Improve performance - add cache
 * 1.1 Remote management - JMX
 * 1.0 First stable version
 
 
+Download
+----------
+Distributions are deployed on mvn-repo branch.
+You can download JAR directly in [mvn-repo](https://github.com/antoine-aumjaud/filter-interceptor/tree/mvn-repo/org/filter-interceptor/filter-interceptor) branch.
+
+Or use maven to download it.
+Add the following repository definition to your pom.xml in repositories section:
+~~~~xml
+	<repository>  
+		<id>filterinterceptor-mvn-repo</id>
+		<name>FilterInterceptor Maven Repository</name>
+		<url>https://raw.github.com/antoine-aumjaud/filter-interceptor/mvn-repo/</url>
+	</repository>
+~~~~
+And add the dependency configuration as:
+~~~~xml
+	<dependency>  
+		<groupId>org.filter-interceptor</groupId>
+		<artifactId>filter-interceptor</artifactId>
+		<version>1.22</version>
+	</dependency>
+~~~~
